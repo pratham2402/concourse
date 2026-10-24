@@ -26,6 +26,8 @@ The strongest view is one stand where the Qloo pick beats the incumbent on model
 4. The constraint layer checks the venue's exclusive beverage partner, family-zone alcohol rule, commissary approval, equipment, and staffing. A blocked partner is rejected, and a switch that loses money is declined.
 5. An optional agent review sends the filtered shortlist, the model output, and the constraint results to a Nebius-hosted model. The agent can switch partner and dish or keep the incumbent. A deterministic check keeps the final veto, and every tool call lands in the trace.
 
+Qloo calls the reference entity a seed. Concourse uses the team brand as the venue seed and one artist or brand per stand as the section seed. Those IDs are public cultural entities, not fan records.
+
 Qloo endpoints used:
 
 - `/search` for entity resolution during development.
