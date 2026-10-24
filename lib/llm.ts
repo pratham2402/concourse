@@ -53,6 +53,18 @@ export function llmStatus(now = Date.now()): {
   return { ok: true, config };
 }
 
+export class NebiusError extends Error {
+  status: number;
+  detail: string;
+
+  constructor(status: number, detail: string) {
+    super(`Nebius ${status}: ${detail}`);
+    this.name = "NebiusError";
+    this.status = status;
+    this.detail = detail;
+  }
+}
+
 type Usage = {
   prompt_tokens?: number;
   completion_tokens?: number;
@@ -100,13 +112,18 @@ export async function callNebius({
     model?: string;
     usage?: Usage;
     error?: { message?: string };
+    detail?: unknown;
   };
 
   if (!response.ok) {
-    const detail = body.error?.message
-      ? `Nebius: ${body.error.message}`
-      : `Nebius returned ${response.status}`;
-    throw new Error(detail);
+    const raw = body.error?.message ?? body.detail;
+    const detail =
+      typeof raw === "string"
+        ? raw
+        : raw
+          ? JSON.stringify(raw).slice(0, 200)
+          : `HTTP ${response.status}`;
+    throw new NebiusError(response.status, detail);
   }
 
   const content = body.choices?.[0]?.message?.content;
