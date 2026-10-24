@@ -2,11 +2,11 @@
 
 A per-stand concession mix optimizer for stadiums, built for the Qloo Agentic Hackathon.
 
-Concourse tells a concessionaire which local restaurant and brand partners belong in each stand and daypart, and what the switch is worth in per-cap revenue. It uses the team's Qloo brand entity and the venue's ticket-buyer geography as the fan signal, then runs a deterministic revenue model over units, price, elasticity, and throughput.
+Concourse tells a concessionaire which local restaurant and brand partners belong in each stand and daypart, and what the switch is worth in per-cap revenue. It uses the team's Qloo brand entity and a section pulse as the fan signal, then runs a deterministic revenue model over units, price, elasticity, and throughput.
 
 ## The problem
 
-Concession assortments are historical and often uniform across a venue. Different stands and dayparts serve different fans. Local restaurant partnerships are relationship-driven. The venue already owns the two signals that matter, ticket-buyer geography and stand sales, but they are not joined to cultural taste.
+Concession assortments are historical and often uniform across a venue. Different stands and dayparts serve different fans. Local restaurant partnerships are relationship-driven. The venue already owns the signals that matter, ticket-buyer geography and stand sales, but the demo does not have the raw rows. It uses the team brand and a section pulse as a stand-in, and the brief says so.
 
 ## The demo
 
@@ -33,7 +33,7 @@ Qloo endpoints used:
 - The partner snapshot in `data/qloo-snapshot.json` is committed so the demo works without a key. It contains no credentials.
 - The live API key is server-side only. The client never sees it.
 - The model is a decision aid, not a guarantee. The app shows the assumptions and a range.
-- Ticket-buyer geography is described as aggregate zip-code shares. The app does not model individuals.
+- The demo uses the team brand and a section pulse. A production deployment would add the venue's aggregate zip-code shares. The app does not model individuals.
 
 ## Run locally
 

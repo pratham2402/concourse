@@ -19,7 +19,7 @@ Concession assortments are historical and often uniform across a venue. Differen
 ## What it does
 
 1. The concessionaire selects a venue, its stands, and a daypart.
-2. The app reads the venue's ticket-buyer zip codes and stand sales (illustrative in the demo). Zip codes are mapped to Qloo locality affinities, not to individuals.
+2. In production, the app reads the venue's ticket-buyer zip codes and stand sales. The demo uses the team brand and a section pulse as a stand-in, and labels the stand sales as illustrative. Zip codes are mapped to Qloo locality affinities, not to individuals.
 3. The team's Qloo brand entity seeds the fan taste profile. A stand can add a short section pulse (a few artists or brands) to sharpen its profile.
 4. Qloo ranks local restaurants and brands by affinity to that section's taste, inside the venue's neighborhood.
 5. A deterministic revenue model compares the incumbent item with the Qloo pick: units, price, margin, throughput cap, and daypart traffic. It produces a conservative, base, and upside per-cap delta. The language model explains the result; it never sets a number.
@@ -63,7 +63,7 @@ Out of scope: real POS integration, contract ingestion, payments, multi-venue ac
 ## Risks and mitigations
 
 - **National contracts and equipment.** The constraint panel is part of the model, not an afterthought. A recommendation that breaks exclusivity is rejected.
-- **Ticket data privacy.** The app uses aggregate zip-code shares and never models individuals.
+- **Ticket data privacy.** The production design uses aggregate zip-code shares and never models individuals. The demo uses the team brand and a section pulse.
 - **Projection accuracy.** The model shows a range and the assumptions. It is a decision aid, not a guarantee. The demo labels sales data as illustrative.
 - **Mid-market data.** Six clubs were tested successfully. If a venue's team brand is missing, the app falls back to the venue's locality plus a short section pulse.
 - **Crowded gallery.** TasteShift stocks a generic event crowd; Carte Locale plans one shop's week. Neither does a multi-stand venue with dayparts, ticket geography, and a per-stand revenue case. Lead with that difference.
