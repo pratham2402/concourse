@@ -114,6 +114,7 @@ export interface Recommendation {
   chainCount: number;
   decision: "switch" | "keep";
   decisionReason: string;
+  agentReviewed: boolean;
   model: ModelResult;
   constraints: ConstraintResult[];
   source: "live" | "snapshot" | "fallback";

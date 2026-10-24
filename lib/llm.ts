@@ -370,6 +370,7 @@ export function applyReview({
         ...rec,
         decision: "keep",
         decisionReason: review.reason ?? "The agent recommends keeping the incumbent.",
+        agentReviewed: true,
         trace,
       },
       review: {
@@ -426,6 +427,7 @@ export function applyReview({
       categoryMatched: true,
       decision: "switch",
       decisionReason: review.reason ?? rec.decisionReason,
+      agentReviewed: true,
       model: chosenModel,
       constraints: chosenConstraints,
       trace,

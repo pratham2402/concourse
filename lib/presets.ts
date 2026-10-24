@@ -10,18 +10,18 @@ export type AgentPreset = {
 
 export const AGENT_PRESETS: AgentPreset[] = [
   {
+    id: "bleachers-grill",
+    label: "Bleachers grill item",
+    standId: "s4",
+    daypart: "midgame",
+    request: "Find a large-group grill item for the Bleachers stand at mid-game.",
+  },
+  {
     id: "home-value",
     label: "Home Plate value item",
     standId: "s1",
     daypart: "midgame",
     request: "Find a value item for the Home Plate stand at mid-game.",
-  },
-  {
-    id: "bleachers-grill",
-    label: "Bleachers chopped cheese",
-    standId: "s4",
-    daypart: "midgame",
-    request: "Find a large-group grill item for the Bleachers stand at mid-game.",
   },
   {
     id: "postgame-late",

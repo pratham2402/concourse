@@ -17,6 +17,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [liveLoading, setLiveLoading] = useState(false);
   const [liveError, setLiveError] = useState<string | null>(null);
+  const [reviewReset, setReviewReset] = useState(0);
   const agentRecommendation = useRef<Recommendation | null>(null);
 
   const stand = getStand(selectedId);
@@ -70,6 +71,7 @@ export default function Home() {
 
   const selectStand = useCallback((id: string) => {
     setSelectedId(id);
+    setReviewReset((value) => value + 1);
     setLiveError(null);
   }, []);
 
@@ -123,6 +125,26 @@ export default function Home() {
           : item,
       ),
     );
+    void fetch(`/api/overview?daypart=${data.daypart}`)
+      .then((response) => response.json())
+      .then((overviewData: { stands: OverviewStand[] }) => {
+        setOverview(
+          (overviewData.stands ?? []).map((item) =>
+            item.standId === data.standId
+              ? {
+                  ...item,
+                  baseDelta: data.recommendation.model.baseDelta,
+                  partnerName: data.recommendation.partner.name,
+                  decision: data.recommendation.decision,
+                  source: data.recommendation.source,
+                }
+              : item,
+          ),
+        );
+      })
+      .catch(() => {
+        // Keep the current overview if the refresh fails.
+      });
     setLiveError(null);
   }, []);
 
@@ -156,7 +178,10 @@ export default function Home() {
                 key={item.key}
                 type="button"
                 aria-pressed={daypart === item.key}
-                onClick={() => setDaypart(item.key)}
+                onClick={() => {
+                  setDaypart(item.key);
+                  setReviewReset((value) => value + 1);
+                }}
               >
                 {item.label}
               </button>
@@ -199,7 +224,7 @@ export default function Home() {
         </aside>
       </section>
 
-      <AgentRequest onResult={handleAgentResult} />
+      <AgentRequest onResult={handleAgentResult} resetSignal={reviewReset} />
 
       <div className="grid">
         <div className="left-col">

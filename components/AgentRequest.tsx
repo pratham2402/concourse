@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AGENT_PRESETS } from "@/lib/presets";
 import { money } from "@/lib/types";
 import type { AgentResponse, LLMReview } from "@/lib/types";
 
 type Props = {
   onResult: (data: AgentResponse) => void;
+  resetSignal: number;
 };
 
 function deltaLabel(value: number | undefined): string {
@@ -21,11 +22,16 @@ function reviewTitle(review: LLMReview): string {
   return "Agent review";
 }
 
-export default function AgentRequest({ onResult }: Props) {
+export default function AgentRequest({ onResult, resetSignal }: Props) {
   const [presetId, setPresetId] = useState(AGENT_PRESETS[0].id);
   const [loading, setLoading] = useState(false);
   const [review, setReview] = useState<LLMReview | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setReview(null);
+    setError(null);
+  }, [resetSignal]);
 
   const preset = AGENT_PRESETS.find((item) => item.id === presetId) ?? AGENT_PRESETS[0];
   const isOffline =

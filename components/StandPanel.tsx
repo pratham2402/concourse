@@ -44,7 +44,7 @@ function downloadBrief(rec: Recommendation, stand: Stand, daypart: Daypart) {
     `**Current item:** ${stand.incumbent.name} at ${money(stand.incumbent.price)}`,
     `**Decision:** ${rec.decision === "switch" ? "SWITCH" : "KEEP THE INCUMBENT"}`,
     `**Why:** ${rec.decisionReason}`,
-    `**Menu fit:** ${rec.categoryMatched ? rec.pickMatchTerm ?? rec.pickTagMatch : rec.localCount === 0 ? "no local candidate passed the venue rules" : "no coherent match"}`,
+    `**${rec.agentReviewed ? "Agent-proposed fit" : "Menu fit"}:** ${rec.categoryMatched ? rec.pickMatchTerm ?? rec.pickTagMatch : rec.localCount === 0 ? "no local candidate passed the venue rules" : "no coherent match"}`,
     ``,
     `## The switch case`,
     ``,
@@ -225,7 +225,7 @@ export default function StandPanel({
             <div className="why-val">
               {rec.pickNote}{" "}
               {rec.categoryMatched
-                ? `Menu fit: ${rec.pickMatchTerm ?? rec.pickTagMatch}.`
+                ? `${rec.agentReviewed ? "Agent-proposed fit" : "Menu fit"}: ${rec.pickMatchTerm ?? rec.pickTagMatch}.`
                 : rec.localCount === 0
                   ? "No local candidate passed the venue rules."
                   : `No coherent ${rec.pickTagMatch} partner in this Qloo list. The closest candidate is shown for comparison.`}

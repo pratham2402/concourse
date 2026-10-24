@@ -254,6 +254,7 @@ export async function runAgent({ standId, daypart, live }: RunInput): Promise<Re
     chainCount,
     decision,
     decisionReason,
+    agentReviewed: false,
     model,
     constraints,
     source,

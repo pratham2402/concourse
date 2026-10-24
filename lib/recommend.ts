@@ -211,6 +211,7 @@ export function buildRecommendation({
     chainCount,
     decision,
     decisionReason: reason,
+    agentReviewed: false,
     model,
     constraints,
     source,
