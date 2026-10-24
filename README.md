@@ -57,19 +57,38 @@ set -a; . .env.local; set +a
 node scripts/snapshot.mjs
 ```
 
+## Agent review (optional)
+
+The operator request card is optional. It sends the filtered Qloo shortlist to a Nebius Token Factory model, which can choose a partner and dish or keep the incumbent. The deterministic check keeps the final veto. Stand and daypart clicks never call the model; only the **Run agent** button does.
+
+Set these in `.env.local` for local work and in Vercel Project Settings, Environment Variables for Production and Preview:
+
+- `NEBIUS_API_KEY`: server-side only.
+- `LLM_ENABLED=true`: turns the card on. The default is off.
+- `LLM_MODEL`: a 70B-class instruct model with JSON mode. The default is `meta-llama/Llama-3.3-70B-Instruct`; verify the exact ID in the Nebius console or with `GET /v1/models?verbose=true`.
+- `LLM_DISABLE_AFTER`: default `2026-11-06T00:00:00Z`. After this date the card says the agent is offline.
+- `LLM_TOTAL_CALL_LIMIT`: default 200 calls per server instance.
+- `LLM_DAILY_CALL_LIMIT`: default 50 calls per instance.
+- `LLM_PER_IP_HOURLY_LIMIT`: default 6.
+- `LLM_MAX_TOKENS`: default 450.
+- `LLM_TIMEOUT_MS`: default 8000.
+
+The call limits are in-memory per server instance, so they are a guard, not a global ledger. Keep the Nebius prepaid balance at the amount you are willing to spend, turn off auto-top-up, and revoke the key after judging. To stop the agent immediately, set `LLM_ENABLED=false` or remove the key; the app falls back to the deterministic decision.
+
 ## Tests
 
 ```bash
 npm test
 ```
 
-Sixteen tests cover the throughput cap, the cost ratio, the Qloo rank and popularity lift, the family-zone block, the substring edge case, category matching, the national-chain filter, the no-switch decision, the capacity note, partner selection, and the daypart overrides.
+Twenty-one tests cover the throughput cap, the cost ratio, the Qloo rank and popularity lift, the family-zone block, the substring edge case, category matching, the national-chain filter, the no-switch decision, the capacity note, partner selection, the daypart overrides, and the LLM response parser and expiry check.
 
 ## Deploy
 
 1. Import https://github.com/pratham2402/concourse at https://vercel.com/new.
 2. Add `QLOO_API_KEY` to Production, Preview, and Development. The key is server-side only.
-3. Deploy. The first load calls the live Qloo API; without a key the app uses the committed snapshot.
+3. For the optional agent review, add the Nebius variables from the section above and redeploy.
+4. Deploy. The first load calls the live Qloo API; without a key the app uses the committed snapshot.
 
 ## Project structure
 
@@ -78,8 +97,10 @@ app/
   page.tsx                 Main dashboard
   api/optimize/route.ts    Single-stand recommendation
   api/overview/route.ts    Stand deltas for the map
+  api/agent/route.ts       Optional LLM review of the shortlist
   globals.css
 components/
+  AgentRequest.tsx         Operator request card
   ConcourseMap.tsx
   StandPanel.tsx
   AgentTrace.tsx
@@ -91,8 +112,11 @@ lib/
   qloo.ts                  Qloo API client
   model.ts                 Revenue model and constraint check
   recommend.ts             Recommendation assembly
+  presets.ts               Operator request presets
+  llm.ts                   Nebius client, limits, validation
 tests/
   model.test.ts            Revenue model and constraint tests
+  llm.test.ts              LLM parser and expiry tests
 scripts/
   snapshot.mjs             Refresh the cached partner rankings
   shot.mjs                 Screenshot helper

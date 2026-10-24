@@ -91,24 +91,32 @@ export type PartnerChoice = {
   chainCount: number;
 };
 
+export function getLocalCandidates(
+  partners: Partner[],
+  stand: Stand,
+  daypart: Daypart,
+): { candidates: Partner[]; locals: Partner[]; chainCount: number } {
+  const capacity = stand.throughputPerHour * stand.hours[daypart];
+  const locals = partners.filter((partner) => !isNationalChain(partner));
+  const candidates = locals.filter(
+    (partner) =>
+      !checkConstraints(stand, partner, daypart, capacity).some(
+        (check) => check.status === "blocked",
+      ),
+  );
+  return { candidates, locals, chainCount: partners.length - locals.length };
+}
+
 export function choosePartner(
   partners: Partner[],
   stand: Stand,
   daypart: Daypart,
 ): PartnerChoice {
   const pick = getPick(stand.id, daypart);
-  const capacity = stand.throughputPerHour * stand.hours[daypart];
-  const local = partners.filter((partner) => !isNationalChain(partner));
-  const chainCount = partners.length - local.length;
-  const valid = local.filter(
-    (partner) =>
-      !checkConstraints(stand, partner, daypart, capacity).some(
-        (check) => check.status === "blocked",
-      ),
-  );
+  const { candidates, locals, chainCount } = getLocalCandidates(partners, stand, daypart);
 
   let matchTerm: string | null = null;
-  const matched = valid.find((partner) => {
+  const matched = candidates.find((partner) => {
     const text = `${partner.name} ${partner.tags.join(" ")} ${partner.description}`.toLowerCase();
     const term = pick.matchTerms.find((candidate) => text.includes(candidate.toLowerCase()));
     if (term) {
@@ -118,13 +126,14 @@ export function choosePartner(
     return false;
   });
 
-  const selected = matched ?? valid[0] ?? local[0] ?? partners[0] ?? pickPartner(partners, stand, daypart);
+  const selected =
+    matched ?? candidates[0] ?? locals[0] ?? partners[0] ?? pickPartner(partners, stand, daypart);
   return {
     partner: selected,
     adjusted: selected.name !== partners[0]?.name,
     matched: Boolean(matched),
     matchTerm,
-    localCount: valid.length,
+    localCount: candidates.length,
     chainCount,
   };
 }

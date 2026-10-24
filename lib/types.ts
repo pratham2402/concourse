@@ -128,6 +128,28 @@ export interface OverviewStand {
   source: "live" | "snapshot" | "fallback";
 }
 
+export type LLMReview = {
+  status: "ok" | "disabled" | "limit" | "error" | "invalid";
+  action?: "switch" | "keep";
+  partnerName?: string;
+  partnerEntityId?: string;
+  dish?: string;
+  reason?: string;
+  model?: string;
+  latencyMs?: number;
+  accepted?: boolean;
+  vetoReason?: string;
+  baseDelta?: number;
+  capacityNote?: string | null;
+};
+
+export type AgentResponse = {
+  standId: string;
+  daypart: Daypart;
+  recommendation: Recommendation;
+  review: LLMReview;
+};
+
 export const DAYPARTS: { key: Daypart; label: string; short: string }[] = [
   { key: "pregame", label: "Pre-game", short: "PRE" },
   { key: "midgame", label: "Mid-game", short: "MID" },

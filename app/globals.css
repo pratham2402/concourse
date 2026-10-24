@@ -875,6 +875,131 @@ details[open] summary::after {
   color: var(--muted);
 }
 
+.agent-card {
+  padding: 16px 18px;
+  margin-bottom: 18px;
+  border-color: rgba(242, 166, 90, 0.28);
+}
+
+.agent-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.agent-preset {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.agent-preset:hover {
+  border-color: var(--amber);
+}
+
+.agent-preset.active {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+.agent-request-line {
+  margin-top: 8px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.agent-run {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.agent-run-note {
+  max-width: 560px;
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.agent-review {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.agent-review.ok {
+  border-color: rgba(94, 194, 138, 0.35);
+}
+
+.agent-review.error,
+.agent-review.invalid {
+  border-color: rgba(224, 108, 90, 0.35);
+}
+
+.agent-review.disabled,
+.agent-review.limit {
+  border-color: rgba(242, 166, 90, 0.35);
+}
+
+.agent-review-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.agent-badge {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.agent-badge.switch {
+  color: #5ec28a;
+}
+
+.agent-badge.keep {
+  color: #e06c5a;
+}
+
+.agent-model {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 8.5px;
+  color: var(--dim);
+}
+
+.agent-review-title {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.agent-review-reason {
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.agent-review-check {
+  margin-top: 8px;
+  font-size: 10px;
+  color: var(--muted);
+}
+
 .trace-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import AgentRequest from "@/components/AgentRequest";
 import AgentTrace from "@/components/AgentTrace";
 import ConcourseMap from "@/components/ConcourseMap";
 import StandPanel from "@/components/StandPanel";
 import { getStand, venue } from "@/data/venue";
-import type { Daypart, OverviewStand, Recommendation } from "@/lib/types";
+import type { AgentResponse, Daypart, OverviewStand, Recommendation } from "@/lib/types";
 import { DAYPARTS, compact } from "@/lib/types";
 
 export default function Home() {
@@ -16,11 +17,20 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [liveLoading, setLiveLoading] = useState(false);
   const [liveError, setLiveError] = useState<string | null>(null);
+  const agentRecommendation = useRef<Recommendation | null>(null);
 
   const stand = getStand(selectedId);
 
   useEffect(() => {
     let cancelled = false;
+    const agentRec = agentRecommendation.current;
+    if (agentRec && agentRec.standId === selectedId && agentRec.daypart === daypart) {
+      agentRecommendation.current = null;
+      setRec(agentRec);
+      setLoading(false);
+      setLiveError(null);
+      return;
+    }
     setLoading(true);
     Promise.all([
       fetch(`/api/overview?daypart=${daypart}`).then((response) => response.json()),
@@ -95,6 +105,27 @@ export default function Home() {
     }
   }, [selectedId, daypart]);
 
+  const handleAgentResult = useCallback((data: AgentResponse) => {
+    agentRecommendation.current = data.recommendation;
+    setSelectedId(data.standId);
+    setDaypart(data.daypart);
+    setRec(data.recommendation);
+    setOverview((current) =>
+      current.map((item) =>
+        item.standId === data.standId
+          ? {
+              ...item,
+              baseDelta: data.recommendation.model.baseDelta,
+              partnerName: data.recommendation.partner.name,
+              decision: data.recommendation.decision,
+              source: data.recommendation.source,
+            }
+          : item,
+      ),
+    );
+    setLiveError(null);
+  }, []);
+
   return (
     <main className="shell">
       <header className="topbar">
@@ -167,6 +198,8 @@ export default function Home() {
           </div>
         </aside>
       </section>
+
+      <AgentRequest onResult={handleAgentResult} />
 
       <div className="grid">
         <div className="left-col">

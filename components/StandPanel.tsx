@@ -62,7 +62,7 @@ function downloadBrief(rec: Recommendation, stand: Stand, daypart: Daypart) {
     ``,
     `## Constraints`,
     ``,
-    ...rec.constraints.map((item) => `- ${item.label}: ${item.status.toUpperCase()} — ${item.detail}`),
+    ...rec.constraints.map((item) => `- ${item.label}: ${item.status.toUpperCase()}. ${item.detail}`),
     ``,
     `## Model`,
     ``,
