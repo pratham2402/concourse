@@ -414,7 +414,7 @@ export function applyReview({
   };
 
   if (!accepted) {
-    return { recommendation: rec, review: nextReview };
+    return { recommendation: { ...rec, trace }, review: nextReview };
   }
 
   return {

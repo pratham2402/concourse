@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { llmStatus, parseReview } from "../lib/llm";
+import { getStand } from "../data/venue";
+import { applyReview, llmStatus, parseReview } from "../lib/llm";
+import { buildRecommendation, getSnapshotPartners } from "../lib/recommend";
 import type { Partner } from "../lib/types";
 
 const candidates: Partner[] = [
@@ -103,5 +105,38 @@ describe("LLM status", () => {
       if (previous.disable === undefined) delete process.env.LLM_DISABLE_AFTER;
       else process.env.LLM_DISABLE_AFTER = previous.disable;
     }
+  });
+});
+
+describe("agent review application", () => {
+  it("keeps the agent step in the trace when the check vetoes a switch", () => {
+    const stand = getStand("s8");
+    const rec = buildRecommendation({
+      standId: "s8",
+      daypart: "postgame",
+      partners: getSnapshotPartners("s8"),
+      source: "snapshot",
+    });
+
+    const applied = applyReview({
+      rec,
+      stand,
+      daypart: "postgame",
+      review: {
+        status: "ok",
+        action: "switch",
+        partnerName: rec.partner.name,
+        partnerEntityId: rec.partner.entityId,
+        dish: "Late-night noodles",
+        reason: "A late-night noodle dish for limited staffing.",
+        model: "test-model",
+        latencyMs: 10,
+      },
+      partner: rec.partner,
+    });
+
+    expect(applied.review.accepted).toBe(false);
+    expect(applied.recommendation.decision).toBe("keep");
+    expect(applied.recommendation.trace.some((event) => event.tool === "llm.review")).toBe(true);
   });
 });
