@@ -30,6 +30,10 @@ const source = await page.locator(".source-pill").innerText();
 await page.screenshot({ path: path.join("shots", "deployed-home.png"), fullPage: true });
 await page.screenshot({ path: path.join("shots", "deployed-viewport.png"), fullPage: false });
 
+await page.getByRole("button", { name: /Right Field/ }).click();
+await page.waitForTimeout(1800);
+await page.screenshot({ path: path.join("shots", "deployed-right-field.png"), fullPage: false });
+
 console.log(`title: ${await page.title()}`);
 console.log(`source: ${source}`);
 console.log(`errors: ${errors.length ? errors.join(" | ") : "none"}`);
