@@ -65,7 +65,7 @@ Set these in `.env.local` for local work and in Vercel Project Settings, Environ
 
 - `NEBIUS_API_KEY`: server-side only.
 - `LLM_ENABLED=true`: turns the card on. The default is off.
-- `LLM_MODEL`: a 70B-class instruct model with JSON mode. The default is `meta-llama/Llama-3.3-70B-Instruct`; verify the exact ID in the Nebius console or with `GET /v1/models?verbose=true`.
+- `LLM_MODEL`: a 70B-class instruct model with a public endpoint in your Nebius project. The default is `meta-llama/Llama-3.3-70B-Instruct`; verify the exact ID in the Nebius console or with `GET /v1/models?verbose=true`. A model marked **Public endpoint: Not available** requires a dedicated endpoint and will return 403 on the shared API. Copy the exact ID from a model page that says **Public endpoint: Available**.
 - `LLM_DISABLE_AFTER`: default `2026-11-06T00:00:00Z`. After this date the card says the agent is offline.
 - `LLM_TOTAL_CALL_LIMIT`: default 200 calls per server instance.
 - `LLM_DAILY_CALL_LIMIT`: default 50 calls per instance.
