@@ -11,7 +11,7 @@ import type {
 
 const BASE_URL =
   process.env.NEBIUS_BASE_URL?.replace(/\/$/, "") ?? "https://api.tokenfactory.nebius.com/v1";
-const DEFAULT_MODEL = "DeepSeek/DeepSeek-V4-Flash-0731";
+const DEFAULT_MODEL = "nvidia/nemotron-3-super-120b-a12b";
 const DEFAULT_DISABLE_AFTER = "2026-11-06T00:00:00Z";
 const CACHE_MS = 10 * 60 * 1000;
 
@@ -29,7 +29,7 @@ export function llmConfig() {
     totalLimit: envInt("LLM_TOTAL_CALL_LIMIT", 200),
     dailyLimit: envInt("LLM_DAILY_CALL_LIMIT", 50),
     perIpLimit: envInt("LLM_PER_IP_HOURLY_LIMIT", 6),
-    maxTokens: envInt("LLM_MAX_TOKENS", 2000),
+    maxTokens: envInt("LLM_MAX_TOKENS", 2500),
     timeoutMs: envInt("LLM_TIMEOUT_MS", 20000),
     baseUrl: BASE_URL,
   };

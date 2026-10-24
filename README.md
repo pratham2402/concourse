@@ -65,12 +65,12 @@ Set these in `.env.local` for local work and in Vercel Project Settings, Environ
 
 - `NEBIUS_API_KEY`: server-side only.
 - `LLM_ENABLED=true`: turns the card on. The default is off.
-- `LLM_MODEL`: a text-to-text model with a public endpoint in your Nebius project. The default is `DeepSeek/DeepSeek-V4-Flash-0731`; verify the exact ID in the Nebius console or with `GET /v1/models?verbose=true`. A model marked **Public endpoint: Not available** requires a dedicated endpoint and will return 403 on the shared API. Copy the exact ID from a model page that says **Public endpoint: Available**.
+- `LLM_MODEL`: a text-to-text model with a public endpoint in your Nebius project. The default is `nvidia/nemotron-3-super-120b-a12b`, the reasoning model the earlier Nebius x NVIDIA project used on this account. The faster alternative is `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B`. A model marked **Public endpoint: Not available** requires a dedicated endpoint and will return 403 on the shared API. Copy the exact ID from a model page that says **Public endpoint: Available**.
 - `LLM_DISABLE_AFTER`: default `2026-11-06T00:00:00Z`. After this date the card says the agent is offline.
 - `LLM_TOTAL_CALL_LIMIT`: default 200 calls per server instance.
 - `LLM_DAILY_CALL_LIMIT`: default 50 calls per instance.
 - `LLM_PER_IP_HOURLY_LIMIT`: default 6.
-- `LLM_MAX_TOKENS`: default 2000. The default model is a reasoning model, so it needs headroom for the answer.
+- `LLM_MAX_TOKENS`: default 2500. The default model is a reasoning model, so it needs headroom for the answer.
 - `LLM_TIMEOUT_MS`: default 20000.
 
 The call limits are in-memory per server instance, so they are a guard, not a global ledger. Keep the Nebius prepaid balance at the amount you are willing to spend, turn off auto-top-up, and revoke the key after judging. To stop the agent immediately, set `LLM_ENABLED=false` or remove the key; the app falls back to the deterministic decision.
