@@ -42,5 +42,5 @@ Qloo Insights API, Qloo Taste Graph, Next.js, React, TypeScript, Vercel.
 
 ## Links
 
-- Live demo: replace after the Vercel import
+- Live demo: https://concourse-delta.vercel.app/
 - Repository: https://github.com/pratham2402/concourse
