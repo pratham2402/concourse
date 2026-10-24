@@ -29,7 +29,7 @@ export function llmConfig() {
     totalLimit: envInt("LLM_TOTAL_CALL_LIMIT", 200),
     dailyLimit: envInt("LLM_DAILY_CALL_LIMIT", 50),
     perIpLimit: envInt("LLM_PER_IP_HOURLY_LIMIT", 6),
-    maxTokens: envInt("LLM_MAX_TOKENS", 800),
+    maxTokens: envInt("LLM_MAX_TOKENS", 2000),
     timeoutMs: envInt("LLM_TIMEOUT_MS", 20000),
     baseUrl: BASE_URL,
   };
@@ -108,7 +108,7 @@ export async function callNebius({
   });
 
   const body = (await response.json().catch(() => ({}))) as {
-    choices?: { message?: { content?: string } }[];
+    choices?: { message?: { content?: string; reasoning_content?: string } }[];
     model?: string;
     usage?: Usage;
     error?: { message?: string };
@@ -126,7 +126,8 @@ export async function callNebius({
     throw new NebiusError(response.status, detail);
   }
 
-  const content = body.choices?.[0]?.message?.content;
+  const message = body.choices?.[0]?.message;
+  const content = message?.content || message?.reasoning_content;
   if (!content) throw new Error("Nebius returned an empty response");
 
   return {

@@ -8,6 +8,7 @@ import {
   consumeLlmCall,
   getCachedReview,
   llmStatus,
+  NebiusError,
   parseReview,
   setCachedReview,
 } from "@/lib/llm";
@@ -43,12 +44,40 @@ function clientIp(request: Request): string {
 }
 
 function llmErrorMessage(error: unknown): string {
+  if (error instanceof NebiusError) {
+    if (error.status === 401 || error.status === 403) {
+      return "The agent key cannot use this model";
+    }
+    if (error.status === 402) {
+      return "The agent budget is unavailable";
+    }
+    if (error.status === 429) {
+      return "The agent is busy. Try again later";
+    }
+    if (error.status === 404) {
+      return "The agent model is not available";
+    }
+    if (error.status === 400 || error.status === 422) {
+      return "The agent model rejected the request";
+    }
+    if (error.status >= 500) {
+      return "The agent provider is unavailable";
+    }
+    return "The agent is unavailable right now";
+  }
+
   const message = error instanceof Error ? error.message : "";
   if (/429|rate/i.test(message)) {
     return "The agent is busy. Try again later";
   }
   if (/timeout|abort/i.test(message)) {
     return "The agent timed out. Try again";
+  }
+  if (/empty response/i.test(message)) {
+    return "The agent returned no answer";
+  }
+  if (/fetch|network|econn|enotfound/i.test(message)) {
+    return "The agent network call failed";
   }
   return "The agent is unavailable right now";
 }

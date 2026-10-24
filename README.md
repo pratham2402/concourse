@@ -70,7 +70,7 @@ Set these in `.env.local` for local work and in Vercel Project Settings, Environ
 - `LLM_TOTAL_CALL_LIMIT`: default 200 calls per server instance.
 - `LLM_DAILY_CALL_LIMIT`: default 50 calls per instance.
 - `LLM_PER_IP_HOURLY_LIMIT`: default 6.
-- `LLM_MAX_TOKENS`: default 800. The default model is a reasoning model, so it needs headroom for the answer.
+- `LLM_MAX_TOKENS`: default 2000. The default model is a reasoning model, so it needs headroom for the answer.
 - `LLM_TIMEOUT_MS`: default 20000.
 
 The call limits are in-memory per server instance, so they are a guard, not a global ledger. Keep the Nebius prepaid balance at the amount you are willing to spend, turn off auto-top-up, and revoke the key after judging. To stop the agent immediately, set `LLM_ENABLED=false` or remove the key; the app falls back to the deterministic decision.
