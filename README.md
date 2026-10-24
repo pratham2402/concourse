@@ -10,14 +10,14 @@ Concession assortments are historical and often uniform across a venue. Differen
 
 ## The demo
 
-The demo uses Yankee Stadium, eight stands, and three dayparts. The stand sales and traffic are illustrative. The Qloo partner rankings are real: the app calls the live hackathon API when you press **Refresh live**, and falls back to a committed snapshot when it cannot.
+The demo uses Yankee Stadium, eight stands, and three dayparts. The stand sales and traffic are illustrative. The Qloo partner rankings are real: the app calls the live hackathon API on first load and on **Refresh live**, and falls back to a committed snapshot when it cannot.
 
 The strongest view is one stand where the Qloo pick beats the incumbent on modeled per-cap, with the calculation and the constraints shown.
 
 ## How it works
 
 1. The team's Qloo brand entity seeds the fan profile. Each stand adds a section pulse, a few artists or brands that reflect the section.
-2. `/v2/insights` ranks local restaurants by affinity to the team and section seeds, scoped to the venue's locality, with explainability on.
+2. `/v2/insights` ranks local restaurants by affinity to the team and section seeds, scoped to the venue's locality, with explainability on. The agent picks the highest-ranked partner that matches the stand's menu category and passes the constraints.
 3. A deterministic model compares the incumbent item with the Qloo pick. It applies units, price, a transparent price elasticity, and the stand's throughput cap. It returns a conservative, base, and upside per-cap delta.
 4. The constraint layer checks the venue's exclusive beverage partner, family-zone alcohol rule, commissary approval, equipment, and staffing. A blocked partner is rejected.
 5. The agent narrates the result from the model outputs. The deterministic model sets the number.
@@ -61,11 +61,13 @@ node scripts/snapshot.mjs
 npm test
 ```
 
-Eight tests cover the throughput cap, the cost ratio, the Qloo rank and popularity lift, the family-zone block, the substring edge case, partner selection, and the daypart overrides.
+Eleven tests cover the throughput cap, the cost ratio, the Qloo rank and popularity lift, the family-zone block, the substring edge case, category matching, partner selection, and the daypart overrides.
 
 ## Deploy
 
-Deploy to Vercel and set `QLOO_API_KEY` in the project environment. The API key is used only by the server routes.
+1. Import https://github.com/pratham2402/concourse at https://vercel.com/new.
+2. Add `QLOO_API_KEY` to Production, Preview, and Development. The key is server-side only.
+3. Deploy. The first load calls the live Qloo API; without a key the app uses the committed snapshot.
 
 ## Project structure
 

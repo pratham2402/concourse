@@ -16,7 +16,7 @@ The operator picks a stand and a daypart. Concourse uses the team's Qloo brand e
 
 ### How we built it
 
-Next.js, React, TypeScript. The Qloo Insights API ranks local restaurants with explainability. A committed snapshot keeps the demo working without a key; Refresh live calls the hackathon API server-side. The revenue model is deterministic and visible in the UI. Eight Vitest tests cover the cap, the lift, the constraint edge cases, and the daypart overrides. The repo includes the snapshot script and the full source.
+Next.js, React, TypeScript. The Qloo Insights API ranks local restaurants with explainability. The agent picks the highest-ranked partner that matches the stand's menu category and passes the venue constraints. The first load calls the live API; the committed snapshot is the fallback. The revenue model is deterministic and visible in the UI. Eleven Vitest tests cover the cap, the lift, the constraint edge cases, category matching, and the daypart overrides. The repo includes the snapshot script and the full source.
 
 ### Challenges
 
@@ -26,7 +26,7 @@ The second challenge is the constraint layer. A local restaurant is not a drop-i
 
 ### Accomplishments
 
-A working app, a real Qloo call, a per-cap model with a visible range, a genuine agent run log, and a constraint layer that rejects blocked partners. The trace shows the Qloo query, the chosen partner, the model inputs, and the constraint result.
+A working app, a real Qloo call, a per-cap model with a visible range, a genuine agent run log, and a constraint layer that rejects blocked partners. The trace shows the Qloo query, the chosen partner, the model inputs, and the constraint result. The app does not hardcode the partner names: Qloo ranks them, the menu category filters them, and the constraints reject the rest.
 
 ### What we learned
 
