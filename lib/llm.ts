@@ -11,7 +11,7 @@ import type {
 
 const BASE_URL =
   process.env.NEBIUS_BASE_URL?.replace(/\/$/, "") ?? "https://api.tokenfactory.nebius.com/v1";
-const DEFAULT_MODEL = "meta-llama/Llama-3.3-70B-Instruct";
+const DEFAULT_MODEL = "DeepSeek/DeepSeek-V4-Flash-0731";
 const DEFAULT_DISABLE_AFTER = "2026-11-06T00:00:00Z";
 const CACHE_MS = 10 * 60 * 1000;
 
@@ -29,7 +29,7 @@ export function llmConfig() {
     totalLimit: envInt("LLM_TOTAL_CALL_LIMIT", 200),
     dailyLimit: envInt("LLM_DAILY_CALL_LIMIT", 50),
     perIpLimit: envInt("LLM_PER_IP_HOURLY_LIMIT", 6),
-    maxTokens: envInt("LLM_MAX_TOKENS", 450),
+    maxTokens: envInt("LLM_MAX_TOKENS", 800),
     timeoutMs: envInt("LLM_TIMEOUT_MS", 20000),
     baseUrl: BASE_URL,
   };
@@ -249,7 +249,8 @@ export function buildPrompt({
     "Choose a partner only from the supplied candidates, or keep the incumbent.",
     "If action is switch, choose a dish that the selected partner plausibly sells, based on its name, tags, and description.",
     "Do not invent a partner. Do not calculate revenue. Do not change the venue rules.",
-    "Return one JSON object with keys: action ('switch' or 'keep'), partnerId (a candidate id or null), dish (string or null), reason (one short sentence).",
+    "Return only one JSON object with keys: action ('switch' or 'keep'), partnerId (a candidate id or null), dish (string or null), reason (one short sentence).",
+    "Do not include analysis, prose, or markdown.",
     "If no candidate fits the dish, the constraints, or the operator request, return keep.",
   ].join(" ");
 
