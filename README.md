@@ -12,7 +12,7 @@ Concourse tells a concessionaire which local partner restaurants belong in each 
 
 ## The problem
 
-Concession assortments are historical and often uniform across a venue. Different stands and dayparts serve different fans. Restaurant partnerships are relationship-driven. The venue already owns the signals that matter, ticket-buyer geography and stand sales, but the demo does not have the raw rows. It uses the team brand and a section pulse as a stand-in, and the brief says so.
+Concession menus tend to be historical and uniform across a venue, even though different stands and dayparts serve different fans. Partnerships are relationship-driven. The venue already has the signals that matter, ticket-buyer geography and stand sales, but this demo does not have the raw rows. It uses the team brand and a section pulse as a stand-in, and the brief says so.
 
 ## The demo
 
@@ -26,7 +26,7 @@ The strongest view is one stand where the Qloo pick beats the incumbent on model
 2. `/v2/insights` ranks partner restaurants by affinity to the team and section seeds, scoped to the venue's locality, with explainability on. A deterministic shortlist filters national chains and drops partners that fail the venue rules.
 3. A deterministic model compares the incumbent item with the best matching Qloo partner. It applies units, price, a transparent price elasticity, and the stand's throughput cap. It returns a conservative, base, and upside per-cap delta.
 4. The constraint layer checks the venue's exclusive beverage partner, family-zone alcohol rule, commissary approval, equipment, and staffing. A blocked partner is rejected, and a switch that loses money is declined.
-5. An optional agent review sends the filtered shortlist, the model output, and the constraint results to a Nebius-hosted model. The agent can switch partner and dish or keep the incumbent. A deterministic check keeps the final veto, and every tool call lands in the trace.
+5. An optional agent review sends the filtered shortlist, the model output, and the constraint results to a Nebius-hosted model. The agent can switch partner and dish or keep the incumbent. A deterministic check keeps the final veto, and every pipeline step lands in the trace.
 
 Qloo calls the reference entity a seed. Concourse uses the team brand as the venue seed and one artist or brand per stand as the section seed. Those IDs are public cultural entities, not fan records.
 
