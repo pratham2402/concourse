@@ -3,6 +3,9 @@ import type { Partner } from "@/lib/types";
 const BASE_URL =
   process.env.QLOO_BASE_URL?.replace(/\/$/, "") ?? "https://hackathon.api.qloo.com";
 
+const partnerCache = new Map<string, { at: number; partners: Partner[] }>();
+const PARTNER_CACHE_MS = 10 * 60 * 1000;
+
 type QlooEntity = {
   name?: string;
   entity_id?: string;
@@ -102,6 +105,12 @@ export async function getLocalPartners({
   locality: string;
   take?: number;
 }): Promise<Partner[]> {
+  const cacheKey = `${teamBrandId}:${seedEntityId}:${locality}:${take}`;
+  const cached = partnerCache.get(cacheKey);
+  if (cached && Date.now() - cached.at < PARTNER_CACHE_MS) {
+    return cached.partners;
+  }
+
   const body = await qlooGet("/v2/insights", {
     "filter.type": "urn:entity:place",
     "filter.tags": "urn:tag:genre:place:restaurant",
@@ -114,10 +123,12 @@ export async function getLocalPartners({
   const effects =
     body.query?.explainability?.["signal.interests.entities"]?.effect_on_top3_recs ?? [];
 
-  return (body.results?.entities ?? []).map((entity, index) => {
+  const partners = (body.results?.entities ?? []).map((entity, index) => {
     const evidence = effects.find((item) => item.entity_id === seedEntityId);
     return toPartner(entity, index + 1, seedEntityId, evidence?.avg_score ?? null);
   });
+  partnerCache.set(cacheKey, { at: Date.now(), partners });
+  return partners;
 }
 
 export function isQlooConfigured(): boolean {
