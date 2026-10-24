@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { venue } from "../data/venue";
 import { getPick } from "../data/picks";
 import { checkConstraints, optimize, pickPartner } from "../lib/model";
+import { choosePartner } from "../lib/recommend";
 import type { Partner } from "../lib/types";
 
 const stand = venue.stands[0];
@@ -67,15 +68,41 @@ describe("constraints", () => {
     const selected = pickPartner([bar, barbecue], familyStand, "midgame");
     expect(selected.name).toBe("Barbecue Pit");
   });
+
+  it("uses the top Qloo partner when it passes", () => {
+    const top = partner({ name: "Top Qloo Pick", rank: 1 });
+    const second = partner({ name: "Second Qloo Pick", rank: 2 });
+    const result = choosePartner([top, second], stand, "midgame");
+    expect(result.partner.name).toBe("Top Qloo Pick");
+    expect(result.adjusted).toBe(false);
+  });
+
+  it("prefers a Qloo partner that matches the menu category", () => {
+    const s2 = venue.stands.find((item) => item.id === "s2")!;
+    const mofongo = partner({ name: "Mofongo El Mocano", tags: ["Mofongo with chicken"], rank: 1 });
+    const pizza = partner({ name: "G Bar", tags: ["Pizza", "Bar service"], rank: 2 });
+    const result = choosePartner([mofongo, pizza], s2, "midgame");
+    expect(result.partner.name).toBe("G Bar");
+    expect(result.adjusted).toBe(true);
+    expect(result.matched).toBe(true);
+  });
+
+  it("re-ranks when the top partner is blocked", () => {
+    const bar = partner({ name: "G Bar", tags: ["Bar service"] });
+    const barbecue = partner({ name: "Barbecue Pit", tags: ["Barbecue"] });
+    const result = choosePartner([bar, barbecue], familyStand, "midgame");
+    expect(result.partner.name).toBe("Barbecue Pit");
+    expect(result.adjusted).toBe(true);
+  });
 });
 
 describe("daypart picks", () => {
-  it("changes the partner for the post-game window", () => {
-    expect(getPick("s1", "midgame").partner).toBe("Mofongo El Mocano (Mofongo Tipico)");
-    expect(getPick("s1", "postgame").partner).toBe("Cake's by Alejandro");
+  it("changes the menu idea for the post-game window", () => {
+    expect(getPick("s1", "midgame").item).toBe("Mofongo bowl");
+    expect(getPick("s1", "postgame").item).toBe("Cake slice");
   });
 
-  it("changes the partner for the pre-game window", () => {
-    expect(getPick("s8", "pregame").partner).toBe("Starbucks Coffee Company");
+  it("changes the menu idea for the pre-game window", () => {
+    expect(getPick("s8", "pregame").item).toBe("Iced coffee");
   });
 });

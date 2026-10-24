@@ -21,35 +21,33 @@ export default function Home() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch(`/api/overview?daypart=${daypart}`)
-      .then((response) => response.json())
-      .then((data: { stands: OverviewStand[] }) => {
-        if (!cancelled) setOverview(data.stands ?? []);
-      })
-      .catch(() => {
-        if (!cancelled) setOverview([]);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [daypart]);
-
-  useEffect(() => {
-    let cancelled = false;
     setLoading(true);
-    fetch(`/api/optimize?standId=${selectedId}&daypart=${daypart}`)
-      .then((response) => response.json())
-      .then((data: Recommendation) => {
-        if (!cancelled) {
-          setRec(data);
-          setLiveError(null);
-        }
+    Promise.all([
+      fetch(`/api/overview?daypart=${daypart}`).then((response) => response.json()),
+      fetch(`/api/optimize?standId=${selectedId}&daypart=${daypart}`).then((response) =>
+        response.json(),
+      ),
+    ])
+      .then(([overviewData, recommendation]: [{ stands: OverviewStand[] }, Recommendation]) => {
+        if (cancelled) return;
+        const stands = (overviewData.stands ?? []).map((item) =>
+          item.standId === selectedId
+            ? {
+                ...item,
+                baseDelta: recommendation.model.baseDelta,
+                partnerName: recommendation.partner.name,
+                source: recommendation.source,
+              }
+            : item,
+        );
+        setOverview(stands);
+        setRec(recommendation);
+        setLiveError(null);
       })
       .catch(() => {
-        if (!cancelled) {
-          setRec(null);
-          setLiveError("The recommendation could not be loaded. Try another stand.");
-        }
+        if (cancelled) return;
+        setRec(null);
+        setLiveError("The recommendation could not be loaded. Try another stand.");
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -151,9 +149,9 @@ export default function Home() {
             The menu is the <em>last guess.</em>
           </h1>
           <p>
-            Concourse reads the ticket-buyer geography around each stand, ranks local restaurant
-            partners with Qloo, and shows the per-cap case before you switch. One venue, many
-            outlets, real constraints.
+            Concourse reads the team's fan signal and the section pulse around each stand, ranks
+            local restaurant partners with Qloo, and shows the per-cap case before you switch.
+            One venue, many outlets, real constraints.
           </p>
         </div>
         <aside className="hero-note">

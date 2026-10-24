@@ -105,6 +105,8 @@ export interface Recommendation {
   menuItem: string;
   menuPrice: number;
   pickNote: string;
+  pickTagMatch: string;
+  categoryMatched: boolean;
   model: ModelResult;
   constraints: ConstraintResult[];
   source: "live" | "snapshot" | "fallback";

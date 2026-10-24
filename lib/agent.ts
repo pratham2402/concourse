@@ -144,13 +144,13 @@ export async function runAgent({ standId, daypart, live }: RunInput): Promise<Re
   }
 
   const rankStart = Date.now();
-  const { partner, adjusted } = choosePartner(partners, stand, daypart);
+  const { partner, adjusted, matched } = choosePartner(partners, stand, daypart);
   trace.push(
     event({
       step: step++,
       tool: "rank.choose",
-      input: `${partners.length} partners; preferred=${pick.partner}`,
-      output: `${partner.name} selected at rank ${partner.rank}${adjusted ? "; the preferred pick was blocked by a constraint" : ""}.`,
+      input: `${partners.length} partners; top=${partners[0]?.name ?? "none"}; match=${pick.tagMatch}`,
+      output: `${partner.name} selected at rank ${partner.rank}${matched ? `; moved past the top result for the ${pick.tagMatch} match` : `; no ${pick.tagMatch} match in this list, so the top Qloo partner is shown`}.`,
       startedAt: rankStart,
       status: adjusted ? "warn" : "ok",
     }),
@@ -202,6 +202,8 @@ export async function runAgent({ standId, daypart, live }: RunInput): Promise<Re
     menuItem: pick.item,
     menuPrice: pick.price,
     pickNote: pick.note,
+    pickTagMatch: pick.tagMatch,
+    categoryMatched: matched,
     model,
     constraints,
     source,

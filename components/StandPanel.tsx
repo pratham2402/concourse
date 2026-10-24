@@ -205,7 +205,12 @@ export default function StandPanel({
           </div>
           <div className="why-row">
             <div className="why-key">Menu fit</div>
-            <div className="why-val">{rec.pickNote}</div>
+            <div className="why-val">
+              {rec.pickNote}{" "}
+              {rec.categoryMatched
+                ? `Category match: ${rec.pickTagMatch}.`
+                : `No ${rec.pickTagMatch} match in this Qloo list; the top partner is shown.`}
+            </div>
           </div>
           <div className="why-row">
             <div className="why-key">Profile</div>

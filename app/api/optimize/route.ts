@@ -15,7 +15,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const standId = searchParams.get("standId") ?? "s1";
   const daypart = parseDaypart(searchParams.get("daypart"));
-  const live = searchParams.get("live") === "1";
+  const live = searchParams.get("live") !== "0";
   const stand = getStand(standId);
 
   const recommendation = await runAgent({ standId: stand.id, daypart, live });

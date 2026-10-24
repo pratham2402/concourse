@@ -22,9 +22,8 @@ export function getSnapshotPartners(standId: string): Partner[] {
 }
 
 export function fallbackPartner(stand: Stand): Partner {
-  const pick = getPick(stand.id, "midgame");
   return {
-    name: pick?.partner ?? "Local partner",
+    name: "Local partner",
     entityId: "",
     type: "urn:entity:place",
     rank: 5,
@@ -43,23 +42,27 @@ export function choosePartner(
   partners: Partner[],
   stand: Stand,
   daypart: Daypart,
-): { partner: Partner; adjusted: boolean } {
+): { partner: Partner; adjusted: boolean; matched: boolean } {
   const pick = getPick(stand.id, daypart);
-  const preferred = partners.find((partner) => partner.name === pick.partner);
-
-  if (preferred) {
-    const checks = checkConstraints(
-      stand,
-      preferred,
-      daypart,
-      stand.throughputPerHour * stand.hours[daypart],
-    );
-    if (!checks.some((check) => check.status === "blocked")) {
-      return { partner: preferred, adjusted: false };
-    }
-  }
-
-  return { partner: pickPartner(partners, stand, daypart), adjusted: Boolean(preferred) };
+  const capacity = stand.throughputPerHour * stand.hours[daypart];
+  const valid = partners.filter(
+    (partner) =>
+      !checkConstraints(stand, partner, daypart, capacity).some(
+        (check) => check.status === "blocked",
+      ),
+  );
+  const category = pick.tagMatch.toLowerCase();
+  const matched = valid.find((partner) =>
+    `${partner.name} ${partner.tags.join(" ")} ${partner.description}`
+      .toLowerCase()
+      .includes(category),
+  );
+  const selected = matched ?? valid[0] ?? pickPartner(partners, stand, daypart);
+  return {
+    partner: selected,
+    adjusted: selected.name !== partners[0]?.name,
+    matched: Boolean(matched),
+  };
 }
 
 export function buildRecommendation({
@@ -75,7 +78,7 @@ export function buildRecommendation({
 }): Recommendation {
   const stand = getStand(standId);
   const pick = getPick(stand.id, daypart);
-  const { partner } = choosePartner(partners, stand, daypart);
+  const { partner, matched } = choosePartner(partners, stand, daypart);
   const modelStand = { ...stand, suggestedItem: pick.item, suggestedPrice: pick.price };
   const model = optimize(modelStand, daypart, partner);
   const constraints = checkConstraints(modelStand, partner, daypart, model.capacity);
@@ -87,6 +90,8 @@ export function buildRecommendation({
     menuItem: pick.item,
     menuPrice: pick.price,
     pickNote: pick.note,
+    pickTagMatch: pick.tagMatch,
+    categoryMatched: matched,
     model,
     constraints,
     source,
