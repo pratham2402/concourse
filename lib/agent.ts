@@ -145,12 +145,18 @@ export async function runAgent({ standId, daypart, live }: RunInput): Promise<Re
 
   const rankStart = Date.now();
   const { partner, adjusted, matched } = choosePartner(partners, stand, daypart);
+  const isTop = partner.name === partners[0]?.name;
+  const matchNote = matched
+    ? isTop
+      ? `; the top result also matches the ${pick.tagMatch} tag`
+      : `; moved past the top result for the ${pick.tagMatch} match`
+    : `; no ${pick.tagMatch} match in this list, so the top Qloo partner is shown`;
   trace.push(
     event({
       step: step++,
       tool: "rank.choose",
       input: `${partners.length} partners; top=${partners[0]?.name ?? "none"}; match=${pick.tagMatch}`,
-      output: `${partner.name} selected at rank ${partner.rank}${matched ? `; moved past the top result for the ${pick.tagMatch} match` : `; no ${pick.tagMatch} match in this list, so the top Qloo partner is shown`}.`,
+      output: `${partner.name} selected at rank ${partner.rank}${matchNote}.`,
       startedAt: rankStart,
       status: adjusted ? "warn" : "ok",
     }),

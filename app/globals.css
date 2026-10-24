@@ -839,6 +839,7 @@ details[open] summary::after {
 
 .trace-card {
   padding: 16px 18px;
+  margin-top: 18px;
 }
 
 .trace-list {
