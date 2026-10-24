@@ -842,6 +842,39 @@ details[open] summary::after {
   margin-top: 18px;
 }
 
+.recommend-label.keep {
+  color: #e06c5a;
+}
+
+.decision-note {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.decision-note.keep {
+  border-color: rgba(224, 108, 90, 0.4);
+  background: rgba(224, 108, 90, 0.08);
+  color: #f1b8ae;
+}
+
+.decision-note.switch {
+  border-color: rgba(94, 194, 138, 0.4);
+  background: rgba(94, 194, 138, 0.08);
+  color: #bfe8d0;
+}
+
+.case-note {
+  margin: 8px 0 0;
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
 .trace-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

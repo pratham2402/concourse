@@ -4,6 +4,7 @@ import { checkConstraints, optimize } from "@/lib/model";
 import { getLocalPartners, isQlooConfigured } from "@/lib/qloo";
 import {
   choosePartner,
+  decideSwitch,
   fallbackPartner,
   getSnapshotPartners,
 } from "@/lib/recommend";
@@ -144,13 +145,30 @@ export async function runAgent({ standId, daypart, live }: RunInput): Promise<Re
   }
 
   const rankStart = Date.now();
-  const { partner, adjusted, matched } = choosePartner(partners, stand, daypart);
+  const { partner, adjusted, matched, matchTerm, localCount, chainCount } = choosePartner(
+    partners,
+    stand,
+    daypart,
+  );
+  trace.push(
+    event({
+      step: step++,
+      tool: "chains.filter",
+      input: `${partners.length} Qloo partners`,
+      output: `${chainCount} national chains excluded; ${localCount} local candidates passed the venue rules.`,
+      startedAt: rankStart,
+    }),
+  );
+
   const isTop = partner.name === partners[0]?.name;
-  const matchNote = matched
-    ? isTop
-      ? `; the top result also matches the ${pick.tagMatch} tag`
-      : `; moved past the top result for the ${pick.tagMatch} match`
-    : `; no ${pick.tagMatch} match in this list, so the top Qloo partner is shown`;
+  const matchNote =
+    localCount === 0
+      ? "; no local candidate passed the venue rules, so the top local partner is shown for comparison"
+      : matched
+        ? isTop
+          ? `; the top result also matches ${matchTerm ?? pick.tagMatch}`
+          : `; moved past the top result for the ${matchTerm ?? pick.tagMatch} match`
+        : `; no coherent ${pick.tagMatch} partner in this list, so the closest candidate is shown for comparison`;
   trace.push(
     event({
       step: step++,
@@ -190,12 +208,33 @@ export async function runAgent({ standId, daypart, live }: RunInput): Promise<Re
     }),
   );
 
+  const decisionStart = Date.now();
+  const { decision, reason: decisionReason } = decideSwitch(
+    model,
+    matched,
+    pick.tagMatch,
+    localCount,
+  );
+  trace.push(
+    event({
+      step: step++,
+      tool: "decision.check",
+      input: `base=${model.baseDelta.toFixed(2)}; matched=${matched}; local=${localCount}; capacity=${model.capacityBound}`,
+      output: `${decision === "switch" ? "Switch" : "Keep"}: ${decisionReason}`,
+      startedAt: decisionStart,
+      status: decision === "keep" ? "warn" : "ok",
+    }),
+  );
+
   trace.push(
     event({
       step: step++,
       tool: "brief.compose",
       input: `stand=${stand.id}; partner=${partner.name}`,
-      output: `Menu idea: ${pick.item} at ${pick.price.toFixed(2)}. Vendor brief ready.`,
+      output:
+        decision === "switch"
+          ? `Menu idea: ${pick.item} at ${pick.price.toFixed(2)}. Vendor brief ready.`
+          : `Keep the incumbent; closest candidate: ${pick.item} at ${pick.price.toFixed(2)}. Vendor brief ready.`,
       startedAt: Date.now(),
       status: liveFailed ? "warn" : "ok",
     }),
@@ -209,7 +248,12 @@ export async function runAgent({ standId, daypart, live }: RunInput): Promise<Re
     menuPrice: pick.price,
     pickNote: pick.note,
     pickTagMatch: pick.tagMatch,
+    pickMatchTerm: matchTerm,
     categoryMatched: matched,
+    localCount,
+    chainCount,
+    decision,
+    decisionReason,
     model,
     constraints,
     source,

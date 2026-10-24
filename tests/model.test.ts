@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { venue } from "../data/venue";
 import { getPick } from "../data/picks";
 import { checkConstraints, optimize, pickPartner } from "../lib/model";
-import { choosePartner } from "../lib/recommend";
+import { choosePartner, decideSwitch } from "../lib/recommend";
 import type { Partner } from "../lib/types";
 
 const stand = venue.stands[0];
@@ -104,5 +104,52 @@ describe("daypart picks", () => {
 
   it("changes the menu idea for the pre-game window", () => {
     expect(getPick("s8", "pregame").item).toBe("Iced coffee");
+  });
+});
+
+describe("integrity decisions", () => {
+  it("filters a national chain and picks a local match", () => {
+    const popeyes = partner({
+      name: "Popeyes Louisiana Kitchen",
+      tags: ["Dessert", "Fast food"],
+      rank: 1,
+    });
+    const bakery = partner({
+      name: "Cake's by Alejandro",
+      tags: ["Bakery", "Desserts"],
+      rank: 2,
+    });
+    const result = choosePartner([popeyes, bakery], familyStand, "midgame");
+    expect(result.partner.name).toBe("Cake's by Alejandro");
+    expect(result.matched).toBe(true);
+    expect(result.matchTerm).toBe("bakery");
+  });
+
+  it("declines a switch when the base case loses money", () => {
+    const model = optimize(familyStand, "midgame", partner());
+    expect(model.baseDelta).toBeLessThan(0);
+    expect(decideSwitch(model, true, "dessert", 1).decision).toBe("keep");
+  });
+
+  it("declines a switch when no coherent partner matches", () => {
+    const model = optimize(familyStand, "midgame", partner());
+    const result = decideSwitch(model, false, "dessert", 1);
+    expect(result.decision).toBe("keep");
+    expect(result.reason).toContain("No coherent dessert");
+  });
+
+  it("declines a switch when every local candidate is blocked", () => {
+    const model = optimize(familyStand, "midgame", partner());
+    const result = decideSwitch(model, false, "dessert", 0);
+    expect(result.decision).toBe("keep");
+    expect(result.reason).toContain("No local candidate");
+  });
+
+  it("flags a capacity-bound post-game case", () => {
+    const s8 = venue.stands.find((item) => item.id === "s8")!;
+    const model = optimize(s8, "postgame", partner());
+    expect(model.capacityBound).toBe(true);
+    expect(model.capacityNote).toContain("cap binds");
+    expect(model.scenarios.every((scenario) => Math.round(scenario.units) === Math.round(model.capacity))).toBe(true);
   });
 });

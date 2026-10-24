@@ -39,11 +39,14 @@ function downloadBrief(rec: Recommendation, stand: Stand, daypart: Daypart) {
     `**Venue:** ${venue.name}, ${venue.city}`,
     `**Stand:** ${stand.label}, ${stand.section}, ${stand.zone}`,
     `**Daypart:** ${daypartLabel}`,
-    `**Partner:** ${rec.partner.name} (Qloo rank ${rec.partner.rank})`,
+    `**Partner candidate:** ${rec.partner.name} (Qloo rank ${rec.partner.rank})`,
     `**Menu idea:** ${rec.menuItem} at ${money(rec.menuPrice)}`,
     `**Current item:** ${stand.incumbent.name} at ${money(stand.incumbent.price)}`,
+    `**Decision:** ${rec.decision === "switch" ? "SWITCH" : "KEEP THE INCUMBENT"}`,
+    `**Why:** ${rec.decisionReason}`,
+    `**Menu fit:** ${rec.categoryMatched ? rec.pickMatchTerm ?? rec.pickTagMatch : rec.localCount === 0 ? "no local candidate passed the venue rules" : "no coherent match"}`,
     ``,
-    `## The switch`,
+    `## The switch case`,
     ``,
     `Modeled base per-cap delta: **${signed(base.delta)} per fan**.`,
     `Conservative to upside: ${signed(rec.model.scenarios[0].delta)} to ${signed(rec.model.scenarios[2].delta)}.`,
@@ -52,7 +55,7 @@ function downloadBrief(rec: Recommendation, stand: Stand, daypart: Daypart) {
     ``,
     `## Why this partner`,
     ``,
-    `${rec.partner.description || "Local partner ranked by Qloo for this section."}`,
+    `${rec.partner.description || "Partner ranked by Qloo for this section."}`,
     ``,
     `Audience seed: ${stand.seedArtist} plus ${venue.team}. Locality: ${venue.locality}.`,
     `Tags: ${rec.partner.tags.slice(0, 10).join(", ") || "not listed"}.`,
@@ -67,7 +70,7 @@ function downloadBrief(rec: Recommendation, stand: Stand, daypart: Daypart) {
     ``,
     `## Note`,
     ``,
-    `This brief uses illustrative stand sales and a deterministic model. It is a decision aid, not a guarantee of lift. Qloo data is used to rank local partners, not to set the revenue numbers.`,
+    `This brief uses illustrative stand sales and a deterministic model. It is a decision aid, not a guarantee of lift. Qloo data is used to rank partner restaurants, not to set the revenue numbers. National chains are filtered from the demo candidate set.`,
     ``,
   ];
   const blob = new Blob([lines.join("\n")], { type: "text/markdown;charset=utf-8" });
@@ -108,6 +111,7 @@ export default function StandPanel({
   const blocked = rec.constraints.filter((item) => item.status === "blocked").length;
   const flagged = rec.constraints.filter((item) => item.status === "flag").length;
   const seedEffect = rec.partner.evidence[0]?.effect;
+  const isKeep = rec.decision === "keep";
 
   return (
     <div className="panel">
@@ -154,20 +158,26 @@ export default function StandPanel({
         <div className="recommend">
           <div className="recommend-top">
             <div>
-              <div className="recommend-label">Recommended switch · Qloo rank #{rec.partner.rank}</div>
-              <div className="recommend-title">{rec.menuItem}</div>
+              <div className={`recommend-label ${isKeep ? "keep" : ""}`}>
+                {isKeep ? "Keep the incumbent" : "Recommended switch"} · Qloo rank #{rec.partner.rank}
+              </div>
+              <div className="recommend-title">{isKeep ? stand.incumbent.name : rec.menuItem}</div>
               <div className="recommend-partner">
-                {rec.partner.name} · {money(rec.menuPrice)}
+                {isKeep
+                  ? `Closest candidate: ${rec.partner.name} · ${money(rec.menuPrice)}`
+                  : `${rec.partner.name} · ${money(rec.menuPrice)}`}
               </div>
             </div>
             <div className="delta-block">
               <div className={`delta-value ${base.delta < 0 ? "negative" : ""}`}>{signed(base.delta)}</div>
-              <div className="delta-label">modeled per fan</div>
+              <div className="delta-label">{isKeep ? "candidate delta per fan" : "modeled per fan"}</div>
               <div className="delta-range">
                 {signed(low.delta)} to {signed(high.delta)}
               </div>
             </div>
           </div>
+
+          <div className={`decision-note ${isKeep ? "keep" : "switch"}`}>{rec.decisionReason}</div>
 
           <div className="switch-row">
             <div className="switch-item">
@@ -177,7 +187,7 @@ export default function StandPanel({
             </div>
             <div className="switch-arrow">→</div>
             <div className="switch-item">
-              <div className="k">Qloo pick</div>
+              <div className="k">{isKeep ? "Closest candidate" : "Qloo pick"}</div>
               <div className="v">{rec.menuItem}</div>
               <div className="p">{money(rec.menuPrice)} · {compact(base.units)} units</div>
             </div>
@@ -186,8 +196,8 @@ export default function StandPanel({
 
         <div className="section">
           <div className="section-title">
-            <span>Why this partner</span>
-            <span>Qloo evidence</span>
+            <span>{isKeep ? "Why this candidate" : "Why this partner"}</span>
+            <span>Qloo signal</span>
           </div>
           <div className="why-row">
             <div className="why-key">Partner</div>
@@ -200,7 +210,14 @@ export default function StandPanel({
             <div className="why-key">Audience</div>
             <div className="why-val">
               Fans of {stand.seedArtist} and {venue.team}, scoped to {venue.locality}.
-              {seedEffect !== null && seedEffect !== undefined ? ` Seed effect ${seedEffect.toFixed(2)}.` : ""}
+            </div>
+          </div>
+          <div className="why-row">
+            <div className="why-key">Seed match</div>
+            <div className="why-val">
+              {seedEffect !== null && seedEffect !== undefined
+                ? "Yes. The seed is present in the Qloo result; rank and popularity carry the variation."
+                : "Not reported in this Qloo result."}
             </div>
           </div>
           <div className="why-row">
@@ -208,8 +225,10 @@ export default function StandPanel({
             <div className="why-val">
               {rec.pickNote}{" "}
               {rec.categoryMatched
-                ? `Category match: ${rec.pickTagMatch}.`
-                : `No ${rec.pickTagMatch} match in this Qloo list; the top partner is shown.`}
+                ? `Menu fit: ${rec.pickMatchTerm ?? rec.pickTagMatch}.`
+                : rec.localCount === 0
+                  ? "No local candidate passed the venue rules."
+                  : `No coherent ${rec.pickTagMatch} partner in this Qloo list. The closest candidate is shown for comparison.`}
             </div>
           </div>
           <div className="why-row">
@@ -217,7 +236,7 @@ export default function StandPanel({
             <div className="why-val">
               {rec.partner.description
                 ? `${rec.partner.description.slice(0, 230)}${rec.partner.description.length > 230 ? "…" : ""}`
-                : "Local partner ranked by the Qloo taste graph for this section."}
+                : "Partner ranked by the Qloo taste graph for this section."}
             </div>
           </div>
           <div className="tag-list">
@@ -273,6 +292,7 @@ export default function StandPanel({
               ))}
             </tbody>
           </table>
+          {rec.model.capacityNote ? <p className="case-note">{rec.model.capacityNote}</p> : null}
         </details>
 
         <details>

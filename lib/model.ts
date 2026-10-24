@@ -164,6 +164,13 @@ export function optimize(stand: Stand, daypart: Daypart, partner: Partner): Mode
   });
 
   const base = scenarios.find((scenario) => scenario.label === "Base") ?? scenarios[0];
+  const baseAtCapacity = base.units >= capacity - 1;
+  const allAtCapacity = scenarios.every((scenario) => scenario.units >= capacity - 1);
+  const capacityNote = allAtCapacity
+    ? `Throughput cap binds in all scenarios: each case serves ${Math.round(capacity).toLocaleString()} units.`
+    : baseAtCapacity
+      ? `Base and upside hit the throughput cap at ${Math.round(capacity).toLocaleString()} units.`
+      : null;
 
   return {
     currentUnits,
@@ -177,10 +184,13 @@ export function optimize(stand: Stand, daypart: Daypart, partner: Partner): Mode
     hours,
     scenarios,
     baseDelta: base.delta,
+    capacityBound: baseAtCapacity,
+    capacityNote,
     assumptions: [
-      `Lift = ${(LIFT_BASE * 100).toFixed(1)}% base + ${(rankLift * 100).toFixed(1)}% rank + ${(LIFT_BY_EVIDENCE * 100).toFixed(1)}% × ${effect.toFixed(2)} evidence + ${(LIFT_BY_POPULARITY * 100).toFixed(1)}% × ${popularity.toFixed(2)} popularity = ${(lift * 100).toFixed(1)}%.`,
+      `Lift = ${(LIFT_BASE * 100).toFixed(1)}% base + ${(rankLift * 100).toFixed(1)}% rank + ${(LIFT_BY_EVIDENCE * 100).toFixed(1)}% × ${effect.toFixed(2)} seed match + ${(LIFT_BY_POPULARITY * 100).toFixed(1)}% × ${popularity.toFixed(2)} popularity = ${(lift * 100).toFixed(1)}%.`,
       `Price elasticity: ${PRICE_ELASTICITY}. Units adjust by (current price / suggested price)^${PRICE_ELASTICITY}.`,
       `Throughput cap: ${stand.throughputPerHour.toLocaleString()} units per hour × ${hours} hours = ${Math.round(capacity).toLocaleString()} units.`,
+      ...(capacityNote ? [capacityNote] : []),
       "Suggested cost uses the incumbent's cost ratio (cost / price).",
       "Stand sales, traffic, and menu costs are illustrative for the demo. The model is a decision aid, not a guarantee.",
     ],

@@ -12,6 +12,7 @@ type Props = {
 
 export default function ConcourseMap({ stands, selectedId, overview, onSelect }: Props) {
   const deltas = new Map(overview.map((item) => [item.standId, item.baseDelta]));
+  const decisions = new Map(overview.map((item) => [item.standId, item.decision]));
 
   return (
     <svg
@@ -64,11 +65,12 @@ export default function ConcourseMap({ stands, selectedId, overview, onSelect }:
       {stands.map((stand) => {
         const delta = deltas.get(stand.id) ?? 0;
         const selected = stand.id === selectedId;
+        const keep = decisions.get(stand.id) === "keep";
         const positive = delta >= 0;
-        const fill = selected ? "#22321f" : positive ? "#122a20" : "#241b1b";
-        const stroke = selected ? "#f2a65a" : positive ? "#2f6b4f" : "#6b3b35";
-        const badgeColor = positive ? "#5ec28a" : "#e06c5a";
-        const badge = `${positive ? "+" : ""}${money(delta)}`;
+        const fill = keep ? "#1a1f24" : selected ? "#22321f" : positive ? "#122a20" : "#241b1b";
+        const stroke = selected ? "#f2a65a" : keep ? "#3a4650" : positive ? "#2f6b4f" : "#6b3b35";
+        const badgeColor = keep ? "#7d8c99" : positive ? "#5ec28a" : "#e06c5a";
+        const badge = keep ? "KEEP" : `${positive ? "+" : ""}${money(delta)}`;
 
         return (
           <g
@@ -76,7 +78,7 @@ export default function ConcourseMap({ stands, selectedId, overview, onSelect }:
             className="map-stand"
             role="button"
             tabIndex={0}
-            aria-label={`${stand.label}, modeled per-cap delta ${badge}`}
+            aria-label={`${stand.label}, ${keep ? "keep the incumbent" : `modeled per-cap delta ${badge}`}`}
             onClick={() => onSelect(stand.id)}
             onKeyDown={(event) => {
               if (event.key === "Enter" || event.key === " ") {
@@ -86,7 +88,7 @@ export default function ConcourseMap({ stands, selectedId, overview, onSelect }:
             }}
             filter={selected ? "url(#glow)" : undefined}
           >
-            <title>{`${stand.label} · ${stand.section} · ${badge} per fan`}</title>
+            <title>{`${stand.label} · ${stand.section} · ${keep ? "keep the incumbent" : `${badge} per fan`}`}</title>
             <rect
               x={stand.x}
               y={stand.y}

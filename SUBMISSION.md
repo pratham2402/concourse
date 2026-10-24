@@ -2,7 +2,7 @@
 
 ## Elevator pitch
 
-The menu is the last guess. Concourse shows stadium concessionaires which local partners belong in each stand and what the switch is worth in per-cap revenue.
+The menu is the last guess. Concourse shows stadium concessionaires which partner restaurants belong in each stand and what the switch is worth in per-cap revenue.
 
 ## About the project
 
@@ -12,21 +12,21 @@ Concession menus are planned by habit. A stadium has eight stands, three daypart
 
 ### What it does
 
-The operator picks a stand and a daypart. Concourse uses the team's Qloo brand entity and a section pulse to rank local restaurants, then runs a deterministic revenue model over units, price, elasticity, and throughput. It shows a conservative, base, and upside per-cap delta, checks the venue's exclusive beverage, family-zone, commissary, equipment, and staffing rules, and exports a vendor brief. A blocked partner is rejected. The agent trace shows every tool call.
+The operator picks a stand and a daypart. Concourse uses the team's Qloo brand entity and a section pulse to rank partner restaurants, then runs a deterministic revenue model over units, price, elasticity, and throughput. It shows a conservative, base, and upside per-cap delta, checks the venue's exclusive beverage, family-zone, commissary, equipment, and staffing rules, and exports a vendor brief. A blocked partner is rejected. A switch is recommended only when the base case is positive and a local partner matches the dish; otherwise the app says keep the incumbent. National chains are filtered from the demo candidate set. The agent trace shows every tool call.
 
 ### How we built it
 
-Next.js, React, TypeScript. The Qloo Insights API ranks local restaurants with explainability. The agent picks the highest-ranked partner that matches the stand's menu category and passes the venue constraints. The first load calls the live API; the committed snapshot is the fallback. The revenue model is deterministic and visible in the UI. Eleven Vitest tests cover the cap, the lift, the constraint edge cases, category matching, and the daypart overrides. The repo includes the snapshot script and the full source.
+Next.js, React, TypeScript. The Qloo Insights API ranks partner restaurants with explainability. The agent filters national chains, picks the highest-ranked local partner that matches the dish and passes the venue constraints, and declines the switch when the base case loses money or no coherent partner matches. The first load calls the live API; the committed snapshot is the fallback. The revenue model is deterministic and visible in the UI. Sixteen Vitest tests cover the cap, the lift, the constraint edge cases, category matching, the no-switch decision, and the daypart overrides. The repo includes the snapshot script and the full source.
 
 ### Challenges
 
 The fan-base proxy. Qloo has team brand entities, verified across six mid-market clubs, but the demo does not have real ticket-buyer rows. The app uses the team brand and a section pulse and labels the stand sales as illustrative. The next step is to ingest the venue's aggregate zip-code shares.
 
-The second challenge is the constraint layer. A local restaurant is not a drop-in menu item. The app flags commissary, exclusivity, equipment, and staffing instead of pretending they do not exist.
+The second challenge is the constraint layer. A partner restaurant is not a drop-in menu item. The app flags commissary, exclusivity, equipment, and staffing instead of pretending they do not exist.
 
 ### Accomplishments
 
-A working app, a real Qloo call, a per-cap model with a visible range, a genuine agent run log, and a constraint layer that rejects blocked partners. The trace shows the Qloo query, the chosen partner, the model inputs, and the constraint result. The app does not hardcode the partner names: Qloo ranks them, the menu category filters them, and the constraints reject the rest.
+A working app, a real Qloo call, a per-cap model with a visible range, a genuine agent run log, a constraint layer that rejects blocked partners, and a decision layer that declines a losing or incoherent switch. The trace shows the Qloo query, the chain filter, the chosen partner, the model inputs, the constraint result, and the keep-or-switch decision. The app does not hardcode the partner names: Qloo ranks them, the dish match filters them, the constraints reject the rest, and the money decides whether to switch.
 
 ### What we learned
 

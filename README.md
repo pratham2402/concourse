@@ -4,11 +4,11 @@ A per-stand concession mix optimizer for stadiums, built for the Qloo Agentic Ha
 
 Live demo: https://concourse-delta.vercel.app/
 
-Concourse tells a concessionaire which local restaurant and brand partners belong in each stand and daypart, and what the switch is worth in per-cap revenue. It uses the team's Qloo brand entity and a section pulse as the fan signal, then runs a deterministic revenue model over units, price, elasticity, and throughput.
+Concourse tells a concessionaire which partner restaurants and brand partners belong in each stand and daypart, and what the switch is worth in per-cap revenue. It uses the team's Qloo brand entity and a section pulse as the fan signal, then runs a deterministic revenue model over units, price, elasticity, and throughput.
 
 ## The problem
 
-Concession assortments are historical and often uniform across a venue. Different stands and dayparts serve different fans. Local restaurant partnerships are relationship-driven. The venue already owns the signals that matter, ticket-buyer geography and stand sales, but the demo does not have the raw rows. It uses the team brand and a section pulse as a stand-in, and the brief says so.
+Concession assortments are historical and often uniform across a venue. Different stands and dayparts serve different fans. Restaurant partnerships are relationship-driven. The venue already owns the signals that matter, ticket-buyer geography and stand sales, but the demo does not have the raw rows. It uses the team brand and a section pulse as a stand-in, and the brief says so.
 
 ## The demo
 
@@ -19,9 +19,9 @@ The strongest view is one stand where the Qloo pick beats the incumbent on model
 ## How it works
 
 1. The team's Qloo brand entity seeds the fan profile. Each stand adds a section pulse, a few artists or brands that reflect the section.
-2. `/v2/insights` ranks local restaurants by affinity to the team and section seeds, scoped to the venue's locality, with explainability on. The agent picks the highest-ranked partner that matches the stand's menu category and passes the constraints.
+2. `/v2/insights` ranks partner restaurants by affinity to the team and section seeds, scoped to the venue's locality, with explainability on. The agent filters national chains, picks the highest-ranked local partner that matches the dish and passes the constraints, and declines the switch when the base case loses money or no coherent partner matches.
 3. A deterministic model compares the incumbent item with the Qloo pick. It applies units, price, a transparent price elasticity, and the stand's throughput cap. It returns a conservative, base, and upside per-cap delta.
-4. The constraint layer checks the venue's exclusive beverage partner, family-zone alcohol rule, commissary approval, equipment, and staffing. A blocked partner is rejected.
+4. The constraint layer checks the venue's exclusive beverage partner, family-zone alcohol rule, commissary approval, equipment, and staffing. A blocked partner is rejected, and a switch that loses money is declined.
 5. The agent narrates the result from the model outputs. The deterministic model sets the number.
 
 Qloo endpoints used:
@@ -63,7 +63,7 @@ node scripts/snapshot.mjs
 npm test
 ```
 
-Eleven tests cover the throughput cap, the cost ratio, the Qloo rank and popularity lift, the family-zone block, the substring edge case, category matching, partner selection, and the daypart overrides.
+Sixteen tests cover the throughput cap, the cost ratio, the Qloo rank and popularity lift, the family-zone block, the substring edge case, category matching, the national-chain filter, the no-switch decision, the capacity note, partner selection, and the daypart overrides.
 
 ## Deploy
 

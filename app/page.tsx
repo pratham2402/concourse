@@ -36,6 +36,7 @@ export default function Home() {
                 ...item,
                 baseDelta: recommendation.model.baseDelta,
                 partnerName: recommendation.partner.name,
+                decision: recommendation.decision,
                 source: recommendation.source,
               }
             : item,
@@ -78,6 +79,7 @@ export default function Home() {
                 ...item,
                 baseDelta: data.model.baseDelta,
                 partnerName: data.partner.name,
+                decision: data.decision,
                 source: data.source,
               }
             : item,
@@ -150,7 +152,7 @@ export default function Home() {
           </h1>
           <p>
             Concourse reads the team's fan signal and the section pulse around each stand, ranks
-            local restaurant partners with Qloo, and shows the per-cap case before you switch.
+            partner restaurants with Qloo, and shows the per-cap case before you switch.
             One venue, many outlets, real constraints.
           </p>
         </div>
@@ -172,7 +174,9 @@ export default function Home() {
           <div className="card-head">
             <div>
               <div className="card-title">Concourse map</div>
-              <div className="card-meta">Level 1 · 8 stands · {venue.neighborhood}</div>
+              <div className="card-meta">
+                Level 1 · 8 stands · {venue.neighborhood} · snapshot overview; selected stand live
+              </div>
             </div>
             <div className="map-status">
               <span className="dot dot-green" />
@@ -195,10 +199,10 @@ export default function Home() {
               <span className="dot dot-amber" /> Selected stand
             </span>
             <span className="legend-item">
-              <span className="dot dot-gray" /> Needs a closer look
+              <span className="dot dot-gray" /> No switch
             </span>
             <span className="legend-item">
-              <span className="dot dot-red" /> Negative or blocked
+              <span className="dot dot-red" /> Negative, blocked, or no switch
             </span>
           </div>
         </section>
@@ -211,7 +215,7 @@ export default function Home() {
               <span className="n">01</span>
               <div>
                 <b>Qloo ranks the partner</b>
-                <p>Team brand, section pulse, and the Concourse locality produce the local restaurant ranking.</p>
+                <p>Team brand, section pulse, and the Concourse locality produce the partner restaurant ranking.</p>
               </div>
             </div>
             <div className="method-step">
@@ -224,8 +228,8 @@ export default function Home() {
             <div className="method-step">
               <span className="n">03</span>
               <div>
-                <b>Constraints decide</b>
-                <p>Exclusivity, commissary, equipment, and staffing. A blocked partner is rejected.</p>
+                <b>Constraints and the money decide</b>
+                <p>Exclusivity, commissary, equipment, and staffing. A blocked partner is rejected, and a switch that loses money is declined.</p>
               </div>
             </div>
           </div>

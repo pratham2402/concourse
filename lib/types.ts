@@ -80,6 +80,8 @@ export interface ModelResult {
   hours: number;
   scenarios: Scenario[];
   baseDelta: number;
+  capacityBound: boolean;
+  capacityNote: string | null;
   assumptions: string[];
 }
 
@@ -106,7 +108,12 @@ export interface Recommendation {
   menuPrice: number;
   pickNote: string;
   pickTagMatch: string;
+  pickMatchTerm: string | null;
   categoryMatched: boolean;
+  localCount: number;
+  chainCount: number;
+  decision: "switch" | "keep";
+  decisionReason: string;
   model: ModelResult;
   constraints: ConstraintResult[];
   source: "live" | "snapshot" | "fallback";
@@ -117,6 +124,7 @@ export interface OverviewStand {
   standId: string;
   baseDelta: number;
   partnerName: string;
+  decision: "switch" | "keep";
   source: "live" | "snapshot" | "fallback";
 }
 
