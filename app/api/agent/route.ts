@@ -171,6 +171,10 @@ export async function POST(request: Request) {
       user: prompt.user,
     });
   } catch (error) {
+    console.error("agent review failed", {
+      model: status.config.model,
+      error: error instanceof Error ? error.message : String(error),
+    });
     const review: LLMReview = {
       status: "error",
       reason: llmErrorMessage(error),

@@ -30,7 +30,7 @@ export function llmConfig() {
     dailyLimit: envInt("LLM_DAILY_CALL_LIMIT", 50),
     perIpLimit: envInt("LLM_PER_IP_HOURLY_LIMIT", 6),
     maxTokens: envInt("LLM_MAX_TOKENS", 450),
-    timeoutMs: envInt("LLM_TIMEOUT_MS", 8000),
+    timeoutMs: envInt("LLM_TIMEOUT_MS", 20000),
     baseUrl: BASE_URL,
   };
 }
