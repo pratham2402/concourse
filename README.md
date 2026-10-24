@@ -8,6 +8,8 @@ Demo video: https://www.youtube.com/watch?v=UhS4Q2q5dpA
 
 Concourse tells a concessionaire which local partner restaurants belong in each stand and daypart, and what the switch is worth in per-cap revenue. It uses the team's Qloo brand entity and a section pulse as the fan signal, then runs a deterministic revenue model over units, price, elasticity, and throughput.
 
+![Concourse map with the Home Plate per-cap case](docs/concourse.png)
+
 ## The problem
 
 Concession assortments are historical and often uniform across a venue. Different stands and dayparts serve different fans. Restaurant partnerships are relationship-driven. The venue already owns the signals that matter, ticket-buyer geography and stand sales, but the demo does not have the raw rows. It uses the team brand and a section pulse as a stand-in, and the brief says so.
