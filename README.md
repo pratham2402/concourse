@@ -65,7 +65,7 @@ Set these in `.env.local` for local work and in Vercel Project Settings, Environ
 
 - `NEBIUS_API_KEY`: server-side only.
 - `LLM_ENABLED=true`: turns the card on. The default is off.
-- `LLM_MODEL`: a text-to-text model with a public endpoint in your Nebius project. The default is `nvidia/nemotron-3-super-120b-a12b`, the reasoning model the earlier Nebius x NVIDIA project used on this account. The faster alternative is `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B`. A model marked **Public endpoint: Not available** requires a dedicated endpoint and will return 403 on the shared API. Copy the exact ID from a model page that says **Public endpoint: Available**.
+- `LLM_MODEL`: a text-to-text model with a public endpoint in your Nebius project. The default is `nvidia/nemotron-3-super-120b-a12b`. The faster alternative is `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B`. A model marked **Public endpoint: Not available** requires a dedicated endpoint and will return 403 on the shared API. Copy the exact ID from a model page that says **Public endpoint: Available**.
 - `LLM_DISABLE_AFTER`: default `2026-11-06T00:00:00Z`. After this date the card says the agent is offline.
 - `LLM_TOTAL_CALL_LIMIT`: default 200 calls per server instance.
 - `LLM_DAILY_CALL_LIMIT`: default 50 calls per instance.
@@ -119,8 +119,6 @@ tests/
   llm.test.ts              LLM parser and expiry tests
 scripts/
   snapshot.mjs             Refresh the cached partner rankings
-  shot.mjs                 Screenshot helper
-  interact.mjs             Live-button test helper
 ```
 
 ## License
