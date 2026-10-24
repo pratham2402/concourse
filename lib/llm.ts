@@ -90,7 +90,6 @@ export async function callNebius({
       ],
       temperature: 0,
       max_tokens: config.maxTokens,
-      response_format: { type: "json_object" },
     }),
     cache: "no-store",
     signal: AbortSignal.timeout(config.timeoutMs),
@@ -122,10 +121,16 @@ export async function callNebius({
 }
 
 function cleanJson(content: string): string {
-  return content
+  const trimmed = content
     .replace(/^```(?:json)?\s*/i, "")
     .replace(/```$/i, "")
     .trim();
+  const start = trimmed.indexOf("{");
+  const end = trimmed.lastIndexOf("}");
+  if (start >= 0 && end > start) {
+    return trimmed.slice(start, end + 1);
+  }
+  return trimmed;
 }
 
 export type ParsedReview = {

@@ -56,6 +56,12 @@ function llmErrorMessage(error: unknown): string {
   if (/timeout|abort/i.test(message)) {
     return "The agent timed out";
   }
+  if (/404|not found|unknown model|model.*invalid/i.test(message)) {
+    return "The agent model was not found. Set LLM_MODEL to a model shown in the Nebius console";
+  }
+  if (/400|invalid|unsupported|response_format|json/i.test(message)) {
+    return "The agent model rejected the request. Check LLM_MODEL and the request format";
+  }
   return "The agent is unavailable right now";
 }
 
