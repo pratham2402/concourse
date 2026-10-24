@@ -8,7 +8,6 @@ import {
   consumeLlmCall,
   getCachedReview,
   llmStatus,
-  NebiusError,
   parseReview,
   setCachedReview,
 } from "@/lib/llm";
@@ -44,47 +43,12 @@ function clientIp(request: Request): string {
 }
 
 function llmErrorMessage(error: unknown): string {
-  if (error instanceof NebiusError) {
-    const detail = error.detail.replace(/\s+/g, " ").slice(0, 140);
-    if (error.status === 401 || error.status === 403) {
-      return `The agent key is not authorized (${error.status})`;
-    }
-    if (error.status === 402) {
-      return "The agent budget is unavailable";
-    }
-    if (error.status === 429) {
-      return "The agent is rate limited. Try again later";
-    }
-    if (error.status === 404) {
-      return `The agent model was not found (${detail || error.status}). Set LLM_MODEL to a model shown in the Nebius console`;
-    }
-    if (error.status === 400 || error.status === 422) {
-      return `The agent model rejected the request (${detail || error.status})`;
-    }
-    if (error.status >= 500) {
-      return `The agent provider is unavailable (${error.status})`;
-    }
-    return `The agent returned an error (${error.status}): ${detail}`;
-  }
-
   const message = error instanceof Error ? error.message : "";
-  if (/401|403|authenticat|forbidden|unauthorized/i.test(message)) {
-    return "The agent could not authenticate. Check the server key and model";
-  }
-  if (/402|budget|credit|quota/i.test(message)) {
-    return "The agent budget is unavailable";
-  }
   if (/429|rate/i.test(message)) {
-    return "The agent is rate limited. Try again later";
+    return "The agent is busy. Try again later";
   }
   if (/timeout|abort/i.test(message)) {
-    return "The agent timed out";
-  }
-  if (/404|not found|unknown model|model.*invalid/i.test(message)) {
-    return "The agent model was not found. Set LLM_MODEL to a model shown in the Nebius console";
-  }
-  if (/400|422|invalid|unsupported|response_format|json/i.test(message)) {
-    return "The agent model rejected the request. Check LLM_MODEL and the request format";
+    return "The agent timed out. Try again";
   }
   return "The agent is unavailable right now";
 }
