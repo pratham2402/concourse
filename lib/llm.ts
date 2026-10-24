@@ -370,7 +370,7 @@ export function applyReview({
         ...rec,
         decision: "keep",
         decisionReason: review.reason ?? "The agent recommends keeping the incumbent.",
-        agentReviewed: true,
+        agentReviewed: false,
         trace,
       },
       review: {
