@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { getStand } from "../data/venue";
-import { applyReview, llmStatus, parseReview } from "../lib/llm";
+import { applyReview, callNebius, llmConfig, llmStatus, parseReview } from "../lib/llm";
 import { buildRecommendation, getSnapshotPartners } from "../lib/recommend";
 import type { Partner } from "../lib/types";
 
@@ -138,5 +138,34 @@ describe("agent review application", () => {
     expect(applied.review.accepted).toBe(false);
     expect(applied.recommendation.decision).toBe("keep");
     expect(applied.recommendation.trace.some((event) => event.tool === "llm.review")).toBe(true);
+  });
+});
+
+describe("Nebius retry", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("retries a 503 and returns the next response", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(new Response("unavailable", { status: 503 }))
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            choices: [{ message: { content: "ok" } }],
+            model: "test-model",
+          }),
+          { status: 200, headers: { "content-type": "application/json" } },
+        ),
+      );
+    vi.stubGlobal("fetch", fetchMock);
+
+    const result = await callNebius({
+      config: { ...llmConfig(), key: "test", model: "test-model", timeoutMs: 1000 },
+      system: "system",
+      user: "user",
+    });
+
+    expect(result.content).toBe("ok");
+    expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 });

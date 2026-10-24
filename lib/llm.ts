@@ -88,54 +88,71 @@ export async function callNebius({
   user: string;
 }): Promise<CallResult> {
   const started = Date.now();
-  const response = await fetch(`${config.baseUrl}/chat/completions`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${config.key}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: config.model,
-      messages: [
-        { role: "system", content: system },
-        { role: "user", content: user },
-      ],
-      temperature: 0,
-      max_tokens: config.maxTokens,
-    }),
-    cache: "no-store",
-    signal: AbortSignal.timeout(config.timeoutMs),
-  });
+  const attempts = 3;
 
-  const body = (await response.json().catch(() => ({}))) as {
-    choices?: { message?: { content?: string; reasoning_content?: string } }[];
-    model?: string;
-    usage?: Usage;
-    error?: { message?: string };
-    detail?: unknown;
-  };
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    const response = await fetch(`${config.baseUrl}/chat/completions`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${config.key}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: config.model,
+        messages: [
+          { role: "system", content: system },
+          { role: "user", content: user },
+        ],
+        temperature: 0,
+        max_tokens: config.maxTokens,
+      }),
+      cache: "no-store",
+      signal: AbortSignal.timeout(config.timeoutMs),
+    });
 
-  if (!response.ok) {
-    const raw = body.error?.message ?? body.detail;
-    const detail =
-      typeof raw === "string"
-        ? raw
-        : raw
-          ? JSON.stringify(raw).slice(0, 200)
-          : `HTTP ${response.status}`;
-    throw new NebiusError(response.status, detail);
+    const body = (await response.json().catch(() => ({}))) as {
+      choices?: { message?: { content?: string; reasoning_content?: string } }[];
+      model?: string;
+      usage?: Usage;
+      error?: { message?: string };
+      detail?: unknown;
+    };
+
+    if (!response.ok) {
+      const raw = body.error?.message ?? body.detail;
+      const detail =
+        typeof raw === "string"
+          ? raw
+          : raw
+            ? JSON.stringify(raw).slice(0, 200)
+            : `HTTP ${response.status}`;
+      const retryable = response.status === 502 || response.status === 503 || response.status === 504;
+      if (retryable && attempt < attempts) {
+        await new Promise((resolve) => setTimeout(resolve, attempt * 500));
+        continue;
+      }
+      throw new NebiusError(response.status, detail);
+    }
+
+    const message = body.choices?.[0]?.message;
+    const content = message?.content || message?.reasoning_content;
+    if (!content) {
+      if (attempt < attempts) {
+        await new Promise((resolve) => setTimeout(resolve, attempt * 500));
+        continue;
+      }
+      throw new Error("Nebius returned an empty response");
+    }
+
+    return {
+      content,
+      model: body.model ?? config.model,
+      usage: body.usage ?? null,
+      latencyMs: Date.now() - started,
+    };
   }
 
-  const message = body.choices?.[0]?.message;
-  const content = message?.content || message?.reasoning_content;
-  if (!content) throw new Error("Nebius returned an empty response");
-
-  return {
-    content,
-    model: body.model ?? config.model,
-    usage: body.usage ?? null,
-    latencyMs: Date.now() - started,
-  };
+  throw new Error("Nebius call failed");
 }
 
 function cleanJson(content: string): string {
