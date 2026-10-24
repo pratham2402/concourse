@@ -21,10 +21,10 @@ The strongest view is one stand where the Qloo pick beats the incumbent on model
 ## How it works
 
 1. The team's Qloo brand entity seeds the fan profile. Each stand adds a section pulse, a few artists or brands that reflect the section.
-2. `/v2/insights` ranks partner restaurants by affinity to the team and section seeds, scoped to the venue's locality, with explainability on. The agent filters national chains, picks the highest-ranked local partner that matches the dish and passes the constraints, and declines the switch when the base case loses money or no coherent partner matches.
-3. A deterministic model compares the incumbent item with the Qloo pick. It applies units, price, a transparent price elasticity, and the stand's throughput cap. It returns a conservative, base, and upside per-cap delta.
+2. `/v2/insights` ranks partner restaurants by affinity to the team and section seeds, scoped to the venue's locality, with explainability on. A deterministic shortlist filters national chains and drops partners that fail the venue rules.
+3. A deterministic model compares the incumbent item with the best matching Qloo partner. It applies units, price, a transparent price elasticity, and the stand's throughput cap. It returns a conservative, base, and upside per-cap delta.
 4. The constraint layer checks the venue's exclusive beverage partner, family-zone alcohol rule, commissary approval, equipment, and staffing. A blocked partner is rejected, and a switch that loses money is declined.
-5. The agent narrates the result from the model outputs. The deterministic model sets the number.
+5. An optional agent review sends the filtered shortlist, the model output, and the constraint results to a Nebius-hosted model. The agent can switch partner and dish or keep the incumbent. A deterministic check keeps the final veto, and every tool call lands in the trace.
 
 Qloo endpoints used:
 
@@ -83,7 +83,7 @@ The call limits are in-memory per server instance, so they are a guard, not a gl
 npm test
 ```
 
-Twenty-one tests cover the throughput cap, the cost ratio, the Qloo rank and popularity lift, the family-zone block, the substring edge case, category matching, the national-chain filter, the no-switch decision, the capacity note, partner selection, the daypart overrides, and the LLM response parser and expiry check.
+Twenty-three tests cover the throughput cap, the cost ratio, the Qloo rank and popularity lift, the family-zone block, the substring edge case, category matching, the national-chain filter, the no-switch decision, the capacity note, partner selection, the daypart overrides, the agent trace and veto path, the Nebius retry, and the LLM response parser and expiry check.
 
 ## Deploy
 
