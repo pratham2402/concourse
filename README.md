@@ -4,6 +4,8 @@ A per-stand concession mix optimizer for stadiums, built for the Qloo Agentic Ha
 
 Live demo: https://concourse-delta.vercel.app/
 
+Demo video: https://www.youtube.com/watch?v=UhS4Q2q5dpA
+
 Concourse tells a concessionaire which partner restaurants and brand partners belong in each stand and daypart, and what the switch is worth in per-cap revenue. It uses the team's Qloo brand entity and a section pulse as the fan signal, then runs a deterministic revenue model over units, price, elasticity, and throughput.
 
 ## The problem
