@@ -252,7 +252,8 @@ export function buildPrompt({
     "Do not invent a partner. Do not calculate revenue. Do not change the venue rules.",
     "Return only one JSON object with keys: action ('switch' or 'keep'), partnerId (a candidate id or null), dish (string or null), reason (one short sentence).",
     "Do not include analysis, prose, or markdown.",
-    "If no candidate fits the dish, the constraints, or the operator request, return keep.",
+    "A constraint status of 'flag' means an approval or operational step is required; it does not disqualify a partner. Only a 'blocked' status disqualifies.",
+    "If no candidate fits the dish or the operator request, or every candidate is blocked, return keep.",
   ].join(" ");
 
   return { system, user: JSON.stringify(payload) };
