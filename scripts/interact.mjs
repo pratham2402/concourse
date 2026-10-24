@@ -22,6 +22,13 @@ page.on("pageerror", (error) => errors.push(error.message));
 await page.goto("http://localhost:3000", { waitUntil: "domcontentloaded", timeout: 30000 });
 await page.waitForSelector(".stand-title", { timeout: 30000 });
 
+await page.getByRole("button", { name: "Post-game", exact: true }).click();
+await page.waitForTimeout(1000);
+const postMenu = await page.locator(".recommend-title").innerText();
+const postPartner = await page.locator(".recommend-partner").innerText();
+await page.getByRole("button", { name: "Mid-game", exact: true }).click();
+await page.waitForTimeout(1000);
+
 const before = await page.locator(".source-pill").innerText();
 await page.locator(".live-btn").click();
 try {
@@ -49,6 +56,7 @@ await page.getByRole("button", { name: /Right Field/ }).click();
 await page.waitForTimeout(1200);
 await page.screenshot({ path: path.join("shots", "right-field.png"), fullPage: false });
 
+console.log(`postgame: ${postMenu} / ${postPartner}`);
 console.log(`source before: ${before}`);
 console.log(`source after: ${after}`);
 console.log(`error: ${errorText || "none"}`);

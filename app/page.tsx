@@ -73,6 +73,18 @@ export default function Home() {
       );
       const data = (await response.json()) as Recommendation;
       setRec(data);
+      setOverview((current) =>
+        current.map((item) =>
+          item.standId === selectedId
+            ? {
+                ...item,
+                baseDelta: data.model.baseDelta,
+                partnerName: data.partner.name,
+                source: data.source,
+              }
+            : item,
+        ),
+      );
       if (data.source !== "live") {
         setLiveError("Live Qloo was unavailable, so the cached snapshot is showing.");
       }
@@ -208,7 +220,7 @@ export default function Home() {
               <span className="n">02</span>
               <div>
                 <b>The model does the math</b>
-                <p>Units, price, elasticity, and throughput capacity. The language model never sets a number.</p>
+                <p>Units, price, elasticity, and throughput capacity. The model, not the narrative, sets the number.</p>
               </div>
             </div>
             <div className="method-step">

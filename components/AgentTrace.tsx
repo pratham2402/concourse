@@ -12,11 +12,11 @@ export default function AgentTrace({ rec }: Props) {
       <div className="card-head">
         <div>
           <div className="card-title">Agent trace</div>
-          <div className="card-meta">The steps behind the recommendation</div>
+          <div className="card-meta">A run log of the tools the agent called</div>
         </div>
         <span className="map-status">
           <span className={`dot ${rec?.source === "live" ? "dot-green" : "dot-amber"}`} />
-          {rec?.source === "live" ? "Live Qloo" : "Cached snapshot"}
+          {rec?.source === "live" ? "Live Qloo" : rec?.source === "snapshot" ? "Snapshot run" : "Fallback run"}
         </span>
       </div>
 
@@ -24,15 +24,21 @@ export default function AgentTrace({ rec }: Props) {
         <div className="loading-block">Waiting for the first stand…</div>
       ) : (
         <div className="trace-list">
-          {rec.trace.map((step, index) => (
-            <div className="trace-step" key={`${step.label}-${index}`}>
-              <div className="trace-index">{String(index + 1).padStart(2, "0")}</div>
+          {rec.trace.map((event) => (
+            <div className="trace-step" key={event.step}>
+              <div className="trace-index">{String(event.step).padStart(2, "0")}</div>
               <div>
                 <div className="trace-label">
-                  <span className={`dot ${step.status === "ok" ? "dot-green" : "dot-amber"}`} />
-                  {step.label}
+                  <span className={`dot ${event.status === "ok" ? "dot-green" : "dot-amber"}`} />
+                  <span className="trace-tool">{event.tool}</span>
+                  <span className="trace-duration">{event.durationMs}ms</span>
                 </div>
-                <div className="trace-detail">{step.detail}</div>
+                <div className="trace-io">
+                  <span>in</span> {event.input}
+                </div>
+                <div className="trace-io">
+                  <span>out</span> {event.output}
+                </div>
               </div>
             </div>
           ))}

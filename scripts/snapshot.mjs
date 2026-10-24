@@ -34,6 +34,7 @@ function toPartner(entity, rank, seedId, effect) {
     description: entity.properties?.description ?? "",
     tags,
     priceLevel: entity.properties?.price_level ?? null,
+    popularity: entity.popularity ?? null,
     neighborhood:
       entity.properties?.neighborhood ?? entity.properties?.locality?.city?.name ?? "The Bronx",
     city: entity.properties?.locality?.city?.name ?? "New York",

@@ -7,10 +7,25 @@ import type {
 } from "@/lib/types";
 
 const PRICE_ELASTICITY = 0.6;
-const LIFT_BY_RANK = [0.08, 0.08, 0.05, 0.05, 0.03];
+const LIFT_BASE = 0.02;
+const LIFT_BY_RANK = [0.04, 0.03, 0.02, 0.015, 0.01];
+const LIFT_BY_EVIDENCE = 0.02;
+const LIFT_BY_POPULARITY = 0.02;
 
-function liftForRank(rank: number): number {
-  return LIFT_BY_RANK[Math.min(rank - 1, LIFT_BY_RANK.length - 1)] ?? 0.03;
+function liftFor(partner: Partner): {
+  lift: number;
+  rankLift: number;
+  effect: number;
+  popularity: number;
+} {
+  const rankLift = LIFT_BY_RANK[Math.min(partner.rank - 1, LIFT_BY_RANK.length - 1)] ?? 0.01;
+  const effect = partner.evidence[0]?.effect ?? 0.5;
+  const popularity = partner.popularity ?? 0.5;
+  const lift = Math.min(
+    0.1,
+    LIFT_BASE + rankLift + LIFT_BY_EVIDENCE * effect + LIFT_BY_POPULARITY * popularity,
+  );
+  return { lift, rankLift, effect, popularity };
 }
 
 function blockedResult(label: string, detail: string): ConstraintResult {
@@ -40,14 +55,14 @@ export function checkConstraints(
 
   return stand.constraints.map((constraint) => {
     if (constraint.startsWith("Exclusive beverage")) {
-      if (/(coca|cola|pepsi|sprite|soda|fountain)/.test(text)) {
+      if (/\b(coca|cola|pepsi|sprite|soda|fountain)\b/.test(text)) {
         return blockedResult(constraint, "Partner profile signals a conflicting beverage brand.");
       }
       return passResult(constraint, "No conflicting beverage signal in the partner profile.");
     }
 
     if (constraint.startsWith("Family zone")) {
-      if (/(bar|lounge|brew|beer|wine|cocktail|alcohol|pub|nightclub)/.test(text)) {
+      if (/\b(bar|lounge|brew|beer|wine|cocktail|alcohol|pub|nightclub)\b/.test(text)) {
         return blockedResult(constraint, "Partner profile signals alcohol or a bar format.");
       }
       return passResult(constraint, "No alcohol or bar signal in the partner profile.");
@@ -61,14 +76,14 @@ export function checkConstraints(
     }
 
     if (constraint.startsWith("Equipment: no fryers")) {
-      if (/(fry|fried|fries|fryer)/.test(text)) {
+      if (/\b(fry|fried|fries|fryer)\b/.test(text)) {
         return blockedResult(constraint, "Menu item likely needs a fryer.");
       }
       return passResult(constraint, "No fryer signal in the partner profile.");
     }
 
     if (constraint.startsWith("Equipment: oven only")) {
-      if (/(grill|fried|fry|fryer)/.test(text)) {
+      if (/\b(grill|fried|fry|fryer)\b/.test(text)) {
         return blockedResult(constraint, "Menu item likely needs a grill or fryer.");
       }
       return passResult(constraint, "Fits an oven-only stand.");
@@ -122,7 +137,7 @@ export function optimize(stand: Stand, daypart: Daypart, partner: Partner): Mode
   const suggestedCost = suggestedPrice * (stand.incumbent.cost / stand.incumbent.price);
   const capacity = stand.throughputPerHour * hours;
 
-  const lift = liftForRank(partner.rank);
+  const { lift, rankLift, effect, popularity } = liftFor(partner);
   const priceEffect = (stand.incumbent.price / suggestedPrice) ** PRICE_ELASTICITY;
 
   const scenarios = (
@@ -163,9 +178,10 @@ export function optimize(stand: Stand, daypart: Daypart, partner: Partner): Mode
     scenarios,
     baseDelta: base.delta,
     assumptions: [
-      `Lift from Qloo rank ${partner.rank}: ${(lift * 100).toFixed(1)}% at base, scaled to 50% and 150% in the range.`,
+      `Lift = ${(LIFT_BASE * 100).toFixed(1)}% base + ${(rankLift * 100).toFixed(1)}% rank + ${(LIFT_BY_EVIDENCE * 100).toFixed(1)}% × ${effect.toFixed(2)} evidence + ${(LIFT_BY_POPULARITY * 100).toFixed(1)}% × ${popularity.toFixed(2)} popularity = ${(lift * 100).toFixed(1)}%.`,
       `Price elasticity: ${PRICE_ELASTICITY}. Units adjust by (current price / suggested price)^${PRICE_ELASTICITY}.`,
       `Throughput cap: ${stand.throughputPerHour.toLocaleString()} units per hour × ${hours} hours = ${Math.round(capacity).toLocaleString()} units.`,
+      "Suggested cost uses the incumbent's cost ratio (cost / price).",
       "Stand sales, traffic, and menu costs are illustrative for the demo. The model is a decision aid, not a guarantee.",
     ],
   };

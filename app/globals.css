@@ -1061,3 +1061,32 @@ details[open] summary::after {
   line-height: 1.4;
   color: var(--dim);
 }
+
+.trace-tool {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.02em;
+  color: var(--amber);
+}
+
+.trace-duration {
+  margin-left: auto;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 8px;
+  color: var(--dim);
+}
+
+.trace-io {
+  margin-top: 3px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.trace-io span {
+  margin-right: 4px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}

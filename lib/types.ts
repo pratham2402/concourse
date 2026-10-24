@@ -48,6 +48,7 @@ export interface Partner {
   description: string;
   tags: string[];
   priceLevel: number | null;
+  popularity: number | null;
   neighborhood: string;
   city: string;
   imageUrl: string | null;
@@ -88,10 +89,13 @@ export interface ConstraintResult {
   detail: string;
 }
 
-export interface TraceStep {
-  label: string;
-  detail: string;
-  status: "ok" | "warn";
+export interface TraceEvent {
+  step: number;
+  tool: string;
+  input: string;
+  output: string;
+  durationMs: number;
+  status: "ok" | "warn" | "error";
 }
 
 export interface Recommendation {
@@ -100,17 +104,18 @@ export interface Recommendation {
   partner: Partner;
   menuItem: string;
   menuPrice: number;
+  pickNote: string;
   model: ModelResult;
   constraints: ConstraintResult[];
   source: "live" | "snapshot" | "fallback";
-  trace: TraceStep[];
+  trace: TraceEvent[];
 }
 
 export interface OverviewStand {
   standId: string;
   baseDelta: number;
   partnerName: string;
-  source: "snapshot" | "fallback";
+  source: "live" | "snapshot" | "fallback";
 }
 
 export const DAYPARTS: { key: Daypart; label: string; short: string }[] = [

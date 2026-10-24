@@ -20,7 +20,7 @@ The strongest view is one stand where the Qloo pick beats the incumbent on model
 2. `/v2/insights` ranks local restaurants by affinity to the team and section seeds, scoped to the venue's locality, with explainability on.
 3. A deterministic model compares the incumbent item with the Qloo pick. It applies units, price, a transparent price elasticity, and the stand's throughput cap. It returns a conservative, base, and upside per-cap delta.
 4. The constraint layer checks the venue's exclusive beverage partner, family-zone alcohol rule, commissary approval, equipment, and staffing. A blocked partner is rejected.
-5. The language layer only explains the result. It never sets a number.
+5. The agent narrates the result from the model outputs. The deterministic model sets the number.
 
 Qloo endpoints used:
 
@@ -55,6 +55,14 @@ set -a; . .env.local; set +a
 node scripts/snapshot.mjs
 ```
 
+## Tests
+
+```bash
+npm test
+```
+
+Eight tests cover the throughput cap, the cost ratio, the Qloo rank and popularity lift, the family-zone block, the substring edge case, partner selection, and the daypart overrides.
+
 ## Deploy
 
 Deploy to Vercel and set `QLOO_API_KEY` in the project environment. The API key is used only by the server routes.
@@ -79,6 +87,8 @@ lib/
   qloo.ts                  Qloo API client
   model.ts                 Revenue model and constraint check
   recommend.ts             Recommendation assembly
+tests/
+  model.test.ts            Revenue model and constraint tests
 scripts/
   snapshot.mjs             Refresh the cached partner rankings
   shot.mjs                 Screenshot helper

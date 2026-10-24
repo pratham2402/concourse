@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T07:16:50.820Z",
+  "generatedAt": "2026-10-24T07:33:38.176Z",
   "locality": "Concourse",
   "teamBrandId": "709D89A7-455A-40E4-A0D3-E77201C1C630",
   "stands": {
@@ -121,6 +121,7 @@
           "Dessert"
         ],
         "priceLevel": 2,
+        "popularity": 0.7766664400778426,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/AB91C565-EC9D-4558-AB55-1A01C6B66694-420x-auto.jpg",
@@ -235,6 +236,7 @@
           "Seafood"
         ],
         "priceLevel": 2,
+        "popularity": 0.9446566083516184,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/9834F3B6-DF79-414B-8380-EC72B8F577A0-420x-auto.jpg",
@@ -360,6 +362,7 @@
           "Coffee and tea"
         ],
         "priceLevel": 1,
+        "popularity": 0.7337003700826975,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/5C89BA9F-B353-48E3-AFC3-4CBB5E091EF3-420x-auto.jpg",
@@ -466,6 +469,7 @@
           "Dine in"
         ],
         "priceLevel": 1,
+        "popularity": 0.664979137112612,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/B024497C-9B91-401A-B92D-BC915C89DB39-420x-auto.jpg",
@@ -548,6 +552,7 @@
           "Unpretentious"
         ],
         "priceLevel": 3,
+        "popularity": 0.06335683542333664,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/93359103-D323-4660-983B-5821E79E5775-420x-auto.jpg",
@@ -670,6 +675,7 @@
           "Alcohol"
         ],
         "priceLevel": null,
+        "popularity": 0.04418110613234793,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/77D747C5-8424-4E18-9CDF-617A011A3D37-420x-auto.jpg",
@@ -822,6 +828,7 @@
           "Delivery restaurant"
         ],
         "priceLevel": 1,
+        "popularity": 0.7027325497817504,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/D0D3A8F8-7826-4C43-9F18-C068C650F20A-420x-auto.jpg",
@@ -924,6 +931,7 @@
           "Full bar"
         ],
         "priceLevel": null,
+        "popularity": 0.1999923108382635,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/2A0CC31F-FE3E-4F0A-9081-21D912C3F937-420x-auto.jpg",
@@ -1053,6 +1061,7 @@
           "Dessert"
         ],
         "priceLevel": 2,
+        "popularity": 0.7766664400778426,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/AB91C565-EC9D-4558-AB55-1A01C6B66694-420x-auto.jpg",
@@ -1167,6 +1176,7 @@
           "Seafood"
         ],
         "priceLevel": 2,
+        "popularity": 0.9446566083516184,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/9834F3B6-DF79-414B-8380-EC72B8F577A0-420x-auto.jpg",
@@ -1273,6 +1283,7 @@
           "Dine in"
         ],
         "priceLevel": 1,
+        "popularity": 0.664979137112612,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/B024497C-9B91-401A-B92D-BC915C89DB39-420x-auto.jpg",
@@ -1355,6 +1366,7 @@
           "Unpretentious"
         ],
         "priceLevel": 3,
+        "popularity": 0.06335683542333664,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/93359103-D323-4660-983B-5821E79E5775-420x-auto.jpg",
@@ -1480,6 +1492,7 @@
           "Coffee and tea"
         ],
         "priceLevel": 1,
+        "popularity": 0.7337003700826975,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/5C89BA9F-B353-48E3-AFC3-4CBB5E091EF3-420x-auto.jpg",
@@ -1602,6 +1615,7 @@
           "Alcohol"
         ],
         "priceLevel": null,
+        "popularity": 0.04418110613234793,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/77D747C5-8424-4E18-9CDF-617A011A3D37-420x-auto.jpg",
@@ -1676,6 +1690,7 @@
           "Residential"
         ],
         "priceLevel": 1,
+        "popularity": 0.048991661159815326,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/905ED357-1669-4110-817B-0DE97F657F27-420x-auto.jpg",
@@ -1778,6 +1793,7 @@
           "Full bar"
         ],
         "priceLevel": null,
+        "popularity": 0.1999923108382635,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/2A0CC31F-FE3E-4F0A-9081-21D912C3F937-420x-auto.jpg",
@@ -1907,6 +1923,7 @@
           "Dessert"
         ],
         "priceLevel": 2,
+        "popularity": 0.7766664400778426,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/AB91C565-EC9D-4558-AB55-1A01C6B66694-420x-auto.jpg",
@@ -2032,6 +2049,7 @@
           "Coffee and tea"
         ],
         "priceLevel": 1,
+        "popularity": 0.7337003700826975,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/5C89BA9F-B353-48E3-AFC3-4CBB5E091EF3-420x-auto.jpg",
@@ -2136,6 +2154,7 @@
           "Casual"
         ],
         "priceLevel": 1,
+        "popularity": 0.26003352028768606,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/CF71F80D-25A8-45C8-A655-70AB911C29FF-420x-auto.jpg",
@@ -2244,6 +2263,7 @@
           "Takeout"
         ],
         "priceLevel": 1,
+        "popularity": 0.32148329501753464,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/796B3385-2E93-482C-A1D1-DB58518CB8F4-420x-auto.jpg",
@@ -2358,6 +2378,7 @@
           "Seafood"
         ],
         "priceLevel": 2,
+        "popularity": 0.9446566083516184,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/9834F3B6-DF79-414B-8380-EC72B8F577A0-420x-auto.jpg",
@@ -2469,6 +2490,7 @@
           "Paid street parking"
         ],
         "priceLevel": 1,
+        "popularity": 0.17157435772283433,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/8F13CD1D-078A-4F72-8B7D-EF535DBD1377-420x-auto.jpg",
@@ -2621,6 +2643,7 @@
           "Delivery restaurant"
         ],
         "priceLevel": 1,
+        "popularity": 0.7027325497817504,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/D0D3A8F8-7826-4C43-9F18-C068C650F20A-420x-auto.jpg",
@@ -2736,6 +2759,7 @@
           "Bustling"
         ],
         "priceLevel": 1,
+        "popularity": 0.3165107846993854,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/2A079D9C-0443-4EAB-B220-FE873538814F-420x-auto.jpg",
@@ -2852,6 +2876,7 @@
           "Seafood"
         ],
         "priceLevel": 2,
+        "popularity": 0.9446566083516184,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/9834F3B6-DF79-414B-8380-EC72B8F577A0-420x-auto.jpg",
@@ -2979,6 +3004,7 @@
           "Dessert"
         ],
         "priceLevel": 2,
+        "popularity": 0.7766664400778426,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/AB91C565-EC9D-4558-AB55-1A01C6B66694-420x-auto.jpg",
@@ -3093,6 +3119,7 @@
           "Takeout counter"
         ],
         "priceLevel": 2,
+        "popularity": 0.4179523725149985,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/B47B6317-D2B0-4C0D-8605-7C51798A5416-420x-auto.jpg",
@@ -3218,6 +3245,7 @@
           "Coffee and tea"
         ],
         "priceLevel": 1,
+        "popularity": 0.7337003700826975,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/5C89BA9F-B353-48E3-AFC3-4CBB5E091EF3-420x-auto.jpg",
@@ -3316,6 +3344,7 @@
           "Casual"
         ],
         "priceLevel": 2,
+        "popularity": 0.13309047468872826,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/11D7BA17-7D9A-4D80-BA28-A68CDD633022-420x-auto.jpg",
@@ -3421,6 +3450,7 @@
           "25 29"
         ],
         "priceLevel": 1,
+        "popularity": 0.33348358772572056,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/800C699F-1B3A-46B8-8CAA-8008DFF0757F-420x-auto.jpg",
@@ -3527,6 +3557,7 @@
           "Dine in"
         ],
         "priceLevel": 1,
+        "popularity": 0.664979137112612,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/B024497C-9B91-401A-B92D-BC915C89DB39-420x-auto.jpg",
@@ -3598,6 +3629,7 @@
           "Takeout"
         ],
         "priceLevel": 1,
+        "popularity": 0.2907758661357802,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/487F97A0-FEFB-42DA-8E81-794206F809E0-420x-auto.jpg",
@@ -3686,6 +3718,7 @@
           "Functional"
         ],
         "priceLevel": 1,
+        "popularity": 0.21672255238566457,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/D85D1676-41F3-4AD0-9C78-A0321209339A-420x-auto.jpg",
@@ -3811,6 +3844,7 @@
           "Coffee and tea"
         ],
         "priceLevel": 1,
+        "popularity": 0.7337003700826975,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/5C89BA9F-B353-48E3-AFC3-4CBB5E091EF3-420x-auto.jpg",
@@ -3882,6 +3916,7 @@
           "Takeout"
         ],
         "priceLevel": 1,
+        "popularity": 0.2907758661357802,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/487F97A0-FEFB-42DA-8E81-794206F809E0-420x-auto.jpg",
@@ -4007,6 +4042,7 @@
           "Central"
         ],
         "priceLevel": 1,
+        "popularity": 0.14107568772494047,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/034E3C94-3551-46D7-B2C3-5737ED8EF6D6-420x-auto.jpg",
@@ -4116,6 +4152,7 @@
           "Dine in"
         ],
         "priceLevel": 1,
+        "popularity": 0.0907733402275769,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/A8ACBCD9-AEAB-4AC8-91E0-37590E327DC2-420x-auto.jpg",
@@ -4222,6 +4259,7 @@
           "Dine in"
         ],
         "priceLevel": 1,
+        "popularity": 0.664979137112612,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/B024497C-9B91-401A-B92D-BC915C89DB39-420x-auto.jpg",
@@ -4374,6 +4412,7 @@
           "Delivery restaurant"
         ],
         "priceLevel": 1,
+        "popularity": 0.7027325497817504,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/D0D3A8F8-7826-4C43-9F18-C068C650F20A-420x-auto.jpg",
@@ -4501,6 +4540,7 @@
           "Credit cards"
         ],
         "priceLevel": 1,
+        "popularity": 0.3114732693907101,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/46C7C06B-8CB0-4CD8-84BE-F958A344FC68-420x-auto.jpg",
@@ -4630,6 +4670,7 @@
           "Dessert"
         ],
         "priceLevel": 2,
+        "popularity": 0.7766664400778426,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/AB91C565-EC9D-4558-AB55-1A01C6B66694-420x-auto.jpg",
@@ -4744,6 +4785,7 @@
           "Seafood"
         ],
         "priceLevel": 2,
+        "popularity": 0.9446566083516184,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/9834F3B6-DF79-414B-8380-EC72B8F577A0-420x-auto.jpg",
@@ -4826,6 +4868,7 @@
           "Unpretentious"
         ],
         "priceLevel": 3,
+        "popularity": 0.06335683542333664,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/93359103-D323-4660-983B-5821E79E5775-420x-auto.jpg",
@@ -4932,6 +4975,7 @@
           "Dine in"
         ],
         "priceLevel": 1,
+        "popularity": 0.664979137112612,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/B024497C-9B91-401A-B92D-BC915C89DB39-420x-auto.jpg",
@@ -5057,6 +5101,7 @@
           "Coffee and tea"
         ],
         "priceLevel": 1,
+        "popularity": 0.7337003700826975,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/5C89BA9F-B353-48E3-AFC3-4CBB5E091EF3-420x-auto.jpg",
@@ -5131,6 +5176,7 @@
           "Residential"
         ],
         "priceLevel": 1,
+        "popularity": 0.048991661159815326,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/905ED357-1669-4110-817B-0DE97F657F27-420x-auto.jpg",
@@ -5253,6 +5299,7 @@
           "Alcohol"
         ],
         "priceLevel": null,
+        "popularity": 0.04418110613234793,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/77D747C5-8424-4E18-9CDF-617A011A3D37-420x-auto.jpg",
@@ -5355,6 +5402,7 @@
           "Full bar"
         ],
         "priceLevel": null,
+        "popularity": 0.1999923108382635,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/2A0CC31F-FE3E-4F0A-9081-21D912C3F937-420x-auto.jpg",
@@ -5484,6 +5532,7 @@
           "Dessert"
         ],
         "priceLevel": 2,
+        "popularity": 0.7766664400778426,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/AB91C565-EC9D-4558-AB55-1A01C6B66694-420x-auto.jpg",
@@ -5609,6 +5658,7 @@
           "Coffee and tea"
         ],
         "priceLevel": 1,
+        "popularity": 0.7337003700826975,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/5C89BA9F-B353-48E3-AFC3-4CBB5E091EF3-420x-auto.jpg",
@@ -5723,6 +5773,7 @@
           "Seafood"
         ],
         "priceLevel": 2,
+        "popularity": 0.9446566083516184,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/9834F3B6-DF79-414B-8380-EC72B8F577A0-420x-auto.jpg",
@@ -5875,6 +5926,7 @@
           "Delivery restaurant"
         ],
         "priceLevel": 1,
+        "popularity": 0.7027325497817504,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/D0D3A8F8-7826-4C43-9F18-C068C650F20A-420x-auto.jpg",
@@ -5983,6 +6035,7 @@
           "Takeout"
         ],
         "priceLevel": 1,
+        "popularity": 0.32148329501753464,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/796B3385-2E93-482C-A1D1-DB58518CB8F4-420x-auto.jpg",
@@ -6105,6 +6158,7 @@
           "Alcohol"
         ],
         "priceLevel": null,
+        "popularity": 0.04418110613234793,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/77D747C5-8424-4E18-9CDF-617A011A3D37-420x-auto.jpg",
@@ -6211,6 +6265,7 @@
           "Dine in"
         ],
         "priceLevel": 1,
+        "popularity": 0.664979137112612,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/B024497C-9B91-401A-B92D-BC915C89DB39-420x-auto.jpg",
@@ -6398,6 +6453,7 @@
           "Salad bar"
         ],
         "priceLevel": 1,
+        "popularity": 0.9770621533144559,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/31E36AD9-DDB9-401B-89CC-74EAAA8B7C85-420x-auto.jpg",
@@ -6514,6 +6570,7 @@
           "Seafood"
         ],
         "priceLevel": 2,
+        "popularity": 0.9446566083516184,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/9834F3B6-DF79-414B-8380-EC72B8F577A0-420x-auto.jpg",
@@ -6641,6 +6698,7 @@
           "Dessert"
         ],
         "priceLevel": 2,
+        "popularity": 0.7766664400778426,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/AB91C565-EC9D-4558-AB55-1A01C6B66694-420x-auto.jpg",
@@ -6766,6 +6824,7 @@
           "Coffee and tea"
         ],
         "priceLevel": 1,
+        "popularity": 0.7337003700826975,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/5C89BA9F-B353-48E3-AFC3-4CBB5E091EF3-420x-auto.jpg",
@@ -6837,6 +6896,7 @@
           "Takeout"
         ],
         "priceLevel": 1,
+        "popularity": 0.2907758661357802,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/487F97A0-FEFB-42DA-8E81-794206F809E0-420x-auto.jpg",
@@ -6989,6 +7049,7 @@
           "Delivery restaurant"
         ],
         "priceLevel": 1,
+        "popularity": 0.7027325497817504,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/D0D3A8F8-7826-4C43-9F18-C068C650F20A-420x-auto.jpg",
@@ -7111,6 +7172,7 @@
           "Alcohol"
         ],
         "priceLevel": null,
+        "popularity": 0.04418110613234793,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/77D747C5-8424-4E18-9CDF-617A011A3D37-420x-auto.jpg",
@@ -7298,6 +7360,7 @@
           "Salad bar"
         ],
         "priceLevel": 1,
+        "popularity": 0.9770621533144559,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/31E36AD9-DDB9-401B-89CC-74EAAA8B7C85-420x-auto.jpg",
@@ -7396,6 +7459,7 @@
           "Delivery"
         ],
         "priceLevel": 1,
+        "popularity": 0.3114732693907101,
         "neighborhood": "New York",
         "city": "New York",
         "imageUrl": "https://images.qloo.com/i/D8CAF76D-6794-4131-A80D-A5F787E58A44-420x-auto.jpg",

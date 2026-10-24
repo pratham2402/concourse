@@ -22,7 +22,7 @@ Concession assortments are historical and often uniform across a venue. Differen
 2. In production, the app reads the venue's ticket-buyer zip codes and stand sales. The demo uses the team brand and a section pulse as a stand-in, and labels the stand sales as illustrative. Zip codes are mapped to Qloo locality affinities, not to individuals.
 3. The team's Qloo brand entity seeds the fan taste profile. A stand can add a short section pulse (a few artists or brands) to sharpen its profile.
 4. Qloo ranks local restaurants and brands by affinity to that section's taste, inside the venue's neighborhood.
-5. A deterministic revenue model compares the incumbent item with the Qloo pick: units, price, margin, throughput cap, and daypart traffic. It produces a conservative, base, and upside per-cap delta. The language model explains the result; it never sets a number.
+5. A deterministic revenue model compares the incumbent item with the Qloo pick: units, price, margin, throughput cap, and daypart traffic. It produces a conservative, base, and upside per-cap delta. The agent narrates the result; the deterministic model sets the number.
 6. The app respects contract constraints: exclusive beverage partners, commissary eligibility, equipment, and stand throughput. A recommendation that breaks a constraint is rejected or flagged.
 7. The operator sees a concourse map, a stand detail, a switch case, and a vendor brief.
 

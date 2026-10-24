@@ -80,6 +80,7 @@ function toPartner(entity: QlooEntity, rank: number, seedId: string, effect: num
       .map((tag) => (typeof tag === "string" ? tag : tag.name ?? ""))
       .filter(Boolean),
     priceLevel: entity.properties?.price_level ?? null,
+    popularity: entity.popularity ?? null,
     neighborhood:
       entity.properties?.neighborhood ??
       entity.properties?.locality?.city?.name ??

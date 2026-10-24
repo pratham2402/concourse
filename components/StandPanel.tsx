@@ -204,6 +204,10 @@ export default function StandPanel({
             </div>
           </div>
           <div className="why-row">
+            <div className="why-key">Menu fit</div>
+            <div className="why-val">{rec.pickNote}</div>
+          </div>
+          <div className="why-row">
             <div className="why-key">Profile</div>
             <div className="why-val">
               {rec.partner.description
