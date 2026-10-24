@@ -12,7 +12,7 @@ export default function AgentTrace({ rec }: Props) {
       <div className="card-head">
         <div>
           <div className="card-title">Agent trace</div>
-          <div className="card-meta">A run log of the tools the agent called</div>
+          <div className="card-meta">A run log of the pipeline and the agent review</div>
         </div>
         <span className="map-status">
           <span className={`dot ${rec?.source === "live" ? "dot-green" : "dot-amber"}`} />

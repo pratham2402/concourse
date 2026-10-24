@@ -16,7 +16,7 @@ Concession assortments are historical and often uniform across a venue. Differen
 
 ## The demo
 
-The demo uses Yankee Stadium, eight stands, and three dayparts. The stand sales and traffic are illustrative. The Qloo partner rankings are real: the app calls the live hackathon API on first load and on **Refresh live**, and falls back to a committed snapshot when it cannot.
+The demo uses Yankee Stadium, eight stands, and three dayparts. The stand sales and traffic are illustrative. The Qloo partner rankings are real: the selected stand calls the live hackathon API on load and on selection, and on **Refresh live**; the map overview is a snapshot. The app falls back to a committed snapshot when the live call fails.
 
 The strongest view is one stand where the Qloo pick beats the incumbent on modeled per-cap, with the calculation and the constraints shown.
 

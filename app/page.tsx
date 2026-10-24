@@ -78,6 +78,7 @@ export default function Home() {
   const refreshLive = useCallback(async () => {
     setLiveLoading(true);
     setLiveError(null);
+    setReviewReset((value) => value + 1);
     try {
       const response = await fetch(
         `/api/optimize?standId=${selectedId}&daypart=${daypart}&live=1`,
@@ -258,9 +259,6 @@ export default function Home() {
             </span>
             <span className="legend-item">
               <span className="dot dot-gray" /> No switch
-            </span>
-            <span className="legend-item">
-              <span className="dot dot-red" /> Negative, blocked, or no switch
             </span>
           </div>
         </section>

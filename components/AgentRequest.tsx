@@ -131,7 +131,7 @@ export default function AgentRequest({ onResult, resetSignal }: Props) {
                   ? "Deterministic check: accepted. The incumbent stays."
                   : review.accepted
                     ? `Deterministic check: accepted. ${deltaLabel(review.baseDelta)} per fan.`
-                    : `Deterministic check: vetoed. ${review.vetoReason ?? "The switch did not clear the rules."}`}
+                    : `Deterministic check: vetoed. ${review.vetoReason ?? "The switch did not clear the rules."} The deterministic recommendation stands.`}
               </div>
             </>
           ) : (
